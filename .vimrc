@@ -1,5 +1,6 @@
 colo desert
 syntax on
+set encoding=utf-8
 set hlsearch " 검색어 하이라이팅
 set nu " 줄번호
 set autoindent " 자동 들여쓰기
@@ -22,6 +23,7 @@ set smarttab
 set smartindent
 set softtabstop=4
 set tabstop=4
+set expandtab
 set ruler " 현재 커서 위치 표시
 set incsearch
 "set statusline=\ %<%l:%v\ [%P]%=%a\ %h%m%r\ %F\
