@@ -1,3 +1,5 @@
+colo desert
+syntax on
 set hlsearch " 검색어 하이라이팅
 set nu " 줄번호
 set autoindent " 자동 들여쓰기
@@ -38,6 +40,8 @@ endif
 if has("syntax")
 syntax on
 endif
+
+imap <C-c> <ESC>
 
 set nocompatible
 filetype off
