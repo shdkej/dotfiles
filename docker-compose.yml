@@ -1,0 +1,9 @@
+version: "2"
+services:
+    node:
+        container_name: node_test
+        image: node:12.10.0-alpine
+        volumes:
+            - ./react:/usr/src/app
+        ports:
+            - "3000:3000"
