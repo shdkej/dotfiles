@@ -1,4 +1,3 @@
-colo desert
 set encoding=utf-8
 set hlsearch " 검색어 하이라이팅
 set nu " 줄번호
@@ -25,7 +24,6 @@ set tabstop=4
 set expandtab
 set ruler " 현재 커서 위치 표시
 set incsearch
-" set statusline=\ %<%l:%v\ [%P]%=%a\ %h%m%r\ %F\
 set term=xterm-256color
 set t_Co=256
 " 마지막으로 수정된 곳에 커서를 위치함
@@ -42,6 +40,8 @@ if has("syntax")
 syntax on
 endif
 
+colo desert
+
 imap <C-c> <ESC>
 
 set nocompatible
@@ -53,12 +53,19 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'junegunn/fzf.vim'
 Plugin 'AutoComplPop'
+Plugin 'benmills/vimux'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'Raimondi/delimitMate'
+
+Plugin 'dense-analysis/ale'
 "
 call vundle#end()
 filetype plugin indent on
@@ -84,9 +91,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 �
 let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보여준다
 let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer 
 nnoremap <C-S-t> :enew<CR>
-nnoremap <C-F5> :bprevious!<CR>
-nnoremap <C-F6> :bnext!<CR>
-nnoremap <C-F4> :bp <BAR> bd #<CR>
+nnoremap <silent> <leader><F5> :bprevious!<CR>
+nnoremap <silent> <leader><F6> :bnext!<CR>
+nnoremap <silent> <leader><F4> :bp <BAR> bd #<CR>
 
 "fzf
 nnoremap <silent> <leader>f :FZF --preview=head\ -10\ {}<cr>
@@ -103,3 +110,21 @@ nnoremap <silent> <Leader>v :call fzf#run({
 
 "ag
 let g:ackprg = 'ag --nogroup --nocolor --column'
+
+"vimux
+map <silent> <Leader>r :VimuxPromptCommand<CR>
+
+"ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
+"ALE
+let g:ale_linters = {
+    \   'python': ['flake8', 'pylint']
+    \}
+
+"delimitMate
+let delimitMate_expand_cr=1

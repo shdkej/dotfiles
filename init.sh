@@ -1,9 +1,16 @@
 #!/bin/bash
 # install package
 cd ~
-sudo apt-get install -y curl vim zsh tmux silversearcher-ag
+sudo apt-get install -y curl vim zsh tmux 
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt-get install -y nodejs
+
+# install programming package
+sudo apt-get install -y ctags flake8 silversearcher-ag
+
+# key mapping
+setxkbmap -option keypad:pointerkeys # set number key
+setxkbmap -option caps:escape # Caps lock as esc
 
 # vim vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -48,10 +55,10 @@ wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_insta
 NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
 sudo ln -s ~/.joplin-bin/bin/joplin /usr/bin/joplin
 # joplin desktop app terminal app sync
-mv \
-~/.config/joplin \
-~/.config/joplin-terminal-bak \
-&& ln -sfn \
+#mv \
+#~/.config/joplin \
+#~/.config/joplin-terminal-bak && \
+ln -sfn \
 ~/.config/joplin-desktop/ \
 ~/.config/joplin
 
