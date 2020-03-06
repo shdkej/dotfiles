@@ -12,11 +12,12 @@ sudo apt-get install -y ctags flake8 silversearcher-ag
 setxkbmap -option keypad:pointerkeys # set number key
 setxkbmap -option caps:escape # Caps lock as esc
 
-# vim vundle
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# vim plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 rm ~/.vimrc
 ln environment/.vimrc ~/.vimrc
-vim -c 'PluginInstall' -c 'qa!'
+vim -c 'PlugInstall' -c 'qa!'
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"

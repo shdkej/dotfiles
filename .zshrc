@@ -159,23 +159,21 @@ ff() {
      print -l $files[1]
   fi
 }
-# docker start & docker attach
+# docker start & docker exec
 function da() {
   local cid
   cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
+  [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" fish
 }
-function fzfp() {
-    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
-                    echo {} is a binary file ||
-                    (highlight -O ansi -l {} ||
-                    coderay {} ||
-                    rougify {} ||
-                    cat {}) 2> /dev/null | head -500'
+function dr() {
+  local cid
+  cid=$(docker ps -a | sed 1d | awk '{print $1}')
+  docker run -it --name $1 ubuntu
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND=''
+export PATH=$PATH:$HOME/.garden/bin
