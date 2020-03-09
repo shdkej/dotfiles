@@ -3,7 +3,7 @@
 cd ~
 sudo apt-get install -y curl vim zsh tmux 
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt-get install -y nodejs python3 python3-pip
 
 # install programming package
 sudo apt-get install -y ctags flake8 silversearcher-ag
@@ -18,6 +18,8 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 rm ~/.vimrc
 ln environment/.vimrc ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
+
+pip install python-language-server
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -34,17 +36,6 @@ rm ~/.zshrc
 echo "###link zshrc###"
 ln environment/.zshrc ~/.zshrc
 sudo chsh -s /usr/bin/zsh
-
-# check install extension
-echo "## Do install extensions? ##"
-read check_update
-if [ $check_update = "n" ]
-then
-    break
-fi
-
-# docker
-echo "test"
 
 # tmux
 ln environment/.tmux.conf ~/.tmux.conf
@@ -67,3 +58,6 @@ ln -sfn \
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 source ~/.zshrc
+
+# snippet
+ln -s ~/UltiSnips ~/.vim/

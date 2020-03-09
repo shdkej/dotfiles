@@ -7,7 +7,7 @@ apt-get install -y curl vim fish
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 rm ~/.vimrc
-ln environment/.vimrc ~/.vimrc
+ln environment/.vimrc.minimal ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 
 chsh -s /usr/bin/fish

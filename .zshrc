@@ -103,8 +103,10 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias jl="joplin"
-alias jln="joplin mknote"
-alias jlt="joplin mktodo"
+alias jln="jl mknote"
+alias jlt="jl mktodo"
+alias jle="jl export --format md /home/sh"
+alias gitc="git clone https://github.com/"
 
 # fzf
 # cd extend
@@ -164,7 +166,7 @@ function da() {
   local cid
   cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" fish
+  [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" bash
 }
 function dr() {
   local cid
