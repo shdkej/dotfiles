@@ -1,7 +1,8 @@
 #!/bin/bash
 # install package
 cd ~
-sudo apt-get install -y curl vim zsh tmux 
+#sudo apt-add-repository ppa:fish-shell/release-3
+sudo apt-get install -y curl vim fish tmux 
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt-get install -y nodejs python3 python3-pip
 
@@ -21,21 +22,9 @@ vim -c 'PlugInstall' -c 'qa!'
 
 pip install python-language-server
 
-# oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-# zsh highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# zsh auto suggestions
-echo "###INSTALL auto suggestions###"
-git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# zsh docker
-echo "###INSTALL zsh docker###"
-mkdir -p ~/.oh-my-zsh/plugins/docker/
-curl -fLo ~/.oh-my-zsh/plugins/docker/_docker https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker
-rm ~/.zshrc
-echo "###link zshrc###"
-ln environment/.zshrc ~/.zshrc
-sudo chsh -s /usr/bin/zsh
+# fish
+ln environment/config.fish ~/.config/fish/config.fish
+sudo chsh -s /usr/bin/fish
 
 # tmux
 ln environment/.tmux.conf ~/.tmux.conf
@@ -57,7 +46,6 @@ ln -sfn \
 # fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
-source ~/.zshrc
 
 # snippet
 ln -s ~/UltiSnips ~/.vim/
