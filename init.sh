@@ -20,7 +20,7 @@ rm ~/.vimrc
 ln environment/.vimrc ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 
-pip install python-language-server
+pip3 install python-language-server
 
 # fish
 ln environment/config.fish ~/.config/fish/config.fish
