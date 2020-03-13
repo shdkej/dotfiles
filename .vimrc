@@ -39,6 +39,9 @@ endif
 if has("syntax")
 syntax on
 endif
+set textwidth=80
+" au BufRead,BufNewFile *.md setlocal textwidth=80
+
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
@@ -47,11 +50,11 @@ colo desert
 
 imap <C-c> <ESC>
 
-call plug#begin('~/.vim/plugged')
-"
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-Plug 'vim-airline/vim-airline'
+call plug#begin('~/.vim/plugged') 
+" 
+Plug 'junegunn/fzf', { 'do': './install --bin' } 
+Plug 'junegunn/fzf.vim' 
+Plug 'vim-airline/vim-airline' 
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -71,6 +74,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+Plug 'fatih/vim-go'
 "
 call plug#end()
 
@@ -209,3 +213,34 @@ inoremap <silent><expr> <TAB>
   \ asyncomplete#force_refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 set completeopt+=preview
+
+" vim-go
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+autocmd BufNewFile, BufRead *go setlocal noexpandtab tabstop=4 shiftwidth=4
+let g:go_fmt_command = "goimports"
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraint = 1
+let g:rehash256 = 1
+let g:molokai_original = 1
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+let g:go_metalinter_deadline = "5s"

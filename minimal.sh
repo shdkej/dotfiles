@@ -10,8 +10,13 @@ rm ~/.vimrc
 ln environment/.vimrc.minimal ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 
+# fish
+ln environment/config.fish ~/.config/fish/config.fish
 chsh -s /usr/bin/fish
 
 # fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+
+# snippet
+ln -s ~/UltiSnips ~/.vim/
