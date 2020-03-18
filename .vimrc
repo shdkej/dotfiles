@@ -39,21 +39,40 @@ endif
 if has("syntax")
 syntax on
 endif
+
+imap <C-c> <ESC>
+
+set colorcolumn=80
+highlight OverLength ctermbg=240 ctermfg=white guibg=#592929
+highlight ColorColumn guibg=#2d2d2d ctermbg=240 ctermfg=white
+match OverLength /\%81v.\+/
 set textwidth=80
-" au BufRead,BufNewFile *.md setlocal textwidth=80
 
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-colo desert
+" Markdown
+function! MarkdownLevel()
+    if getline(v:lnum) =~ '^## .*$'
+        return ">1"
+    endif
+    if getline(v:lnum) =~ '^#### .*$'
+        return ">2"
+    endif
+    return "="
+endfunction
 
-imap <C-c> <ESC>
+au BufEnter *.{md,vimwiki} setlocal foldexpr=MarkdownLevel()
+au BufEnter *.{md,vimwiki} setlocal foldmethod=expr
+au BufEnter *.{md,vimwiki} normal zR
 
+" Plug
 call plug#begin('~/.vim/plugged') 
 " 
 Plug 'junegunn/fzf', { 'do': './install --bin' } 
 Plug 'junegunn/fzf.vim' 
+Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline' 
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
@@ -64,6 +83,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'mrk21/yaml-vim'
 Plug 'skanehira/docker-compose.vim'
+Plug 'mhinz/vim-startify'
+Plug 'vimwiki/vimwiki'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 Plug 'dense-analysis/ale'
 Plug 'mattn/vim-lsp-settings'
@@ -77,6 +99,7 @@ Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'fatih/vim-go'
 "
 call plug#end()
+
 
 "NERDTree
 nmap <F3> :NERDTreeToggle<CR>
@@ -99,27 +122,94 @@ let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 �
 let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보여준다
 let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer 
 nnoremap <C-S-t> :enew<CR>
-nnoremap <F5> :bprevious!<CR>
-nnoremap <F6> :bnext!<CR>
-nnoremap <silent> <leader><F4> :bp <BAR> bd #<CR>
+nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
+nnoremap <silent> <leader>5 :bprevious!<CR>
+nnoremap <silent> <leader>6 :bnext!<CR>
 
 "fzf
 nnoremap <silent> <leader>f :FZF --preview=head\ -10\ {}<cr>
 nnoremap <silent> <leader>F :FZF ~<cr>
-" Open files in horizontal split
-nnoremap <silent> <Leader>s :call fzf#run({
-\   'down': '40%',
-\   'sink': 'botright split' })<CR>
 
-" Open files in vertical horizontal split
-nnoremap <silent> <Leader>v :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink':  'vertical botright split' })<CR>
+" vimwiki
+au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
+autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
+autocmd FileType vimwiki map <leader>g :VimwikiDiaryGenerateLinks
 
-"ag
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                    \ 'syntax': 'markdown', 'ext': '.md'}]
+
+function! LastModified()
+    if g:md_modify_disabled
+        return
+    endif
+    if &modified
+        let save_cursor = getpos(".")
+        let n = min([10, line("$")])
+        keepjumps exe '1,' . n . 's#^\(.\{,10}updated\s*: \).*#\1' .
+            \ strftime('%Y-%m-%d %H:%M:%S +0100') . '#e'
+        call histdel('search', -1)
+        call setpos('.', save_cursor)
+    endif
+endfunction
+
+function! NewTemplate()
+    let l:wiki_directory = v:false
+
+    for wiki in g:vimwiki_list
+        if expand('%:p:h') . '/' == expand(wiki.path)
+            let l:wiki_directory = v:true
+            break
+        endif
+    endfor
+
+    if !l:wiki_directory
+        return
+    endif
+
+    if line("$") > 1
+        return
+    endif
+
+    let l:template = []
+    call add(l:template, '---')
+    call add(l:template, 'layout  : post')
+    call add(l:template, 'title   : ')
+    call add(l:template, 'summary : ')
+    call add(l:template, 'date    : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
+    call add(l:template, 'updated : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
+    call add(l:template, 'tags    : ')
+    call add(l:template, 'toc     : true')
+    call add(l:template, '---')
+    call add(l:template, '')
+    call add(l:template, '# ')
+    call setline(1, l:template)
+    execute 'normal! G'
+    execute 'normal! $'
+
+    echom 'new wiki page has created'
+endfunction
+
+let g:vimwiki_table_mappings = 0
+
+augroup vimwikiauto
+    autocmd BufWritePre *.md call LastModified()
+    autocmd BufRead,BufNewFile *.md call NewTemplate()
+    autocmd FileType vimwiki inoremap <C-s> <C-r>=vimwiki#tbl#kbd_tab()<CR>
+    autocmd FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
+augroup END
+
+let g:md_modify_disabled = 0
+
+" startify
+let g:startify_bookmarks = [
+        \ { 'c': '~/.vimrc' },
+        \ { 'd': '~/vimwiki/diary/diary.md' },
+        \ ]
+" ag
 let g:ackprg = 'ag --nogroup --nocolor --column'
+nnoremap <silent> <leader>s :Ag ~<cr>
 
-"vimux
+" vimux
 map <silent> <Leader>r :VimuxPromptCommand<CR>
 
 "ultisnips
@@ -231,7 +321,7 @@ autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-autocmd BufNewFile, BufRead *go setlocal noexpandtab tabstop=4 shiftwidth=4
+autocmd BufNewFile, BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 let g:go_fmt_command = "goimports"
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
@@ -244,3 +334,8 @@ let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_deadline = "5s"
+
+" Markdown Preview
+nmap <leader>m <Plug>MarkdownPreviewToggle
+
+colorscheme molokai

@@ -11,6 +11,7 @@ ln environment/.vimrc.minimal ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 
 # fish
+rm ~/.config/fish/config.fish
 ln environment/config.fish ~/.config/fish/config.fish
 chsh -s /usr/bin/fish
 
