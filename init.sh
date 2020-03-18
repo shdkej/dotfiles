@@ -22,6 +22,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 rm ~/.vimrc
 ln environment/.vimrc ~/.vimrc
+source ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 pip3 install python-language-server
 
@@ -29,6 +30,7 @@ pip3 install python-language-server
 # ---
 rm ~/.config/fish/config.fish
 ln environment/config.fish ~/.config/fish/config.fish
+source ~/.config/fish/config.fish
 sudo chsh -s /usr/bin/fish
 
 # tmux

@@ -8,11 +8,13 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 rm ~/.vimrc
 ln environment/.vimrc.minimal ~/.vimrc
+source ~/.vimrc
 vim -c 'PlugInstall' -c 'qa!'
 
 # fish
 rm ~/.config/fish/config.fish
 ln environment/config.fish ~/.config/fish/config.fish
+source ~/.config/fish/config.fish
 chsh -s /usr/bin/fish
 
 # fzf
