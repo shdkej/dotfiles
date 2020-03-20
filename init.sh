@@ -48,7 +48,7 @@ if [ -e $FISH_CONFIG  ]
 then
     mv $FISH_CONFIG $FISH_CONFIG.backup
 fi
-ln config.fish $FISH_CONFIG
+ln ./config.fish $FISH_CONFIG
 #source $FISH_CONFIG
 $SUDO chsh -s /usr/bin/fish
 
