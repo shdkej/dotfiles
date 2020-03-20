@@ -10,6 +10,7 @@ then
     setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
+ls -al
 
 # install package
 echo -e "###\nPackage Install\n###"
