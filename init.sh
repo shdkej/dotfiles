@@ -25,7 +25,7 @@ $SUDO apt-get install -y ctags flake8 silversearcher-ag
 
 
 # vim plug
-VIMRC="~/.vimrc"
+VIMRC=~/.vimrc
 echo -e "###\nSetting VIM\n###"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -41,7 +41,7 @@ pip3 install python-language-server
 
 
 # fish
-FISH_CONFIG="~/.config/fish/config.fish"
+FISH_CONFIG=~/.config/fish/config.fish
 echo -e "###\nSetting fish shell\n###"
 if [ -e $FISH_CONFIG  ]
 then
@@ -54,7 +54,7 @@ $SUDO chsh -s /usr/bin/fish
 
 # tmux
 # ---
-TMUX_CONFIG="~/.tmux.conf"
+TMUX_CONFIG=~/.tmux.conf
 echo -e "###\nSetting fish shell\n###"
 if [ -e $TMUX_CONFIG ]
 then
