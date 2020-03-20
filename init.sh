@@ -10,7 +10,6 @@ then
     setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
-ls -al
 
 # install package
 echo -e "###\nPackage Install\n###"
@@ -36,8 +35,8 @@ then
     mv $VIMRC $VIMRC.backup
 fi
 ln .vimrc $VIMRC
-#source $VIMRC || echo "Fail execute source"
-#vim -c 'PlugInstall' -c 'qa!'
+source $VIMRC || echo "Fail execute source"
+vim +'PlugInstall  --sync' +qa
 pip3 install python-language-server
 
 
@@ -50,13 +49,13 @@ then
 fi
 mkdir -p ~/.config/fish
 ln config.fish $FISH_CONFIG
-#source $FISH_CONFIG
+source $FISH_CONFIG || echo "Fail execute source"
 $SUDO chsh -s /usr/bin/fish
 
 
 # tmux
 # ---
-if [ $(whoami) != "runner" ]
+if [ ! $GIT_TESTER ]
 then
     TMUX_CONFIG=~/.tmux.conf
     echo -e "###\nSetting fish shell\n###"
