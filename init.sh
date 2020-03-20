@@ -4,10 +4,11 @@ set -u -e
 SUDO=''
 if [ "$(whoami)" != "root" ]
 then
+    echo "$(whoami)"
     SUDO='sudo'
     # key mapping
-    setxkbmap -option keypad:pointerkeys # set number key
-    setxkbmap -option caps:escape # Caps lock as esc
+    #setxkbmap -option keypad:pointerkeys # set number key
+    #setxkbmap -option caps:escape # Caps lock as esc
 fi
 
 
