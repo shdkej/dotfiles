@@ -4,7 +4,7 @@ set -u -e
 SUDO=''
 if [ "$(whoami)" != "root" ]
 then
-    echo "$(whoami)"
+    echo "$(PWD)"
     SUDO='sudo'
     # key mapping
     setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
