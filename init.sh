@@ -36,7 +36,7 @@ if [ -e $VIMRC  ]
 then
     mv $VIMRC $VIMRC.backup
 fi
-ln ~/environment/.vimrc $VIMRC || ln ./.vimrc $VIMRC
+ln ~/environment/.vimrc $VIMRC || ln $PWD/.vimrc $VIMRC
 source $VIMRC || echo "Fail execute source"
 vim -c 'PlugInstall' -c 'qa!'
 pip3 install python-language-server
@@ -62,7 +62,7 @@ if [ -e $TMUX_CONFIG ]
 then
     mv $TMUX_CONFIG $TMUX_CONFIG.backup
 fi
-ln ~/environment/.tmux.conf $TMUX_CONFIG || ln ./.tmux.conf $TMUX_CONFIG
+ln ~/environment/.tmux.conf $TMUX_CONFIG || ln .tmux.conf $TMUX_CONFIG
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source $TMUX_CONFIG
 
