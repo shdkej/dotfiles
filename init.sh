@@ -36,7 +36,7 @@ then
 fi
 ln .vimrc $VIMRC
 source $VIMRC || echo "Fail execute source"
-vim +'PlugInstall' +qall > /dev/null
+#vim +'PlugInstall' +qall > /dev/null
 pip3 install python-language-server
 
 
