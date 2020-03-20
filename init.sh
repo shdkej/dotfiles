@@ -18,7 +18,6 @@ $SUDO apt-get install -y curl vim fish tmux
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 $SUDO apt-get install -y nodejs python3 python3-pip
 
-[ $? -eq 0 ] || exit 1
 
 # install programming package
 echo -e "###\nProgramming Package Install\n###"
@@ -36,8 +35,8 @@ then
     mv $VIMRC $VIMRC.backup
 fi
 ln .vimrc $VIMRC
-source $VIMRC || echo "Fail execute source"
-vim -c 'PlugInstall' -c 'qa!'
+#source $VIMRC || echo "Fail execute source"
+#vim -c 'PlugInstall' -c 'qa!'
 pip3 install python-language-server
 
 
@@ -49,7 +48,7 @@ then
     mv $FISH_CONFIG $FISH_CONFIG.backup
 fi
 ln config.fish $FISH_CONFIG
-source $FISH_CONFIG
+#source $FISH_CONFIG
 $SUDO chsh -s /usr/bin/fish
 
 
