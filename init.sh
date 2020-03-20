@@ -1,7 +1,8 @@
 #!/bin/bash
 SUDO = ''
-if [["$EUID" != 0 ]] then
-    SUDO='sudo'
+if [["$EUID" != 0 ]]
+then
+    $SUDO='sudo'
     # key mapping
     setxkbmap -option keypad:pointerkeys # set number key
     setxkbmap -option caps:escape # Caps lock as esc
@@ -28,7 +29,8 @@ echo -e "###\nSetting VIM\n###"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-if [[ -e $VIMRC  ]] then
+if [[ -e $VIMRC  ]]
+then
     mv $VIMRC $VIMRC.backup
 fi
 ln ~/environment/.vimrc $VIMRC
@@ -40,7 +42,8 @@ pip3 install python-language-server
 # fish
 FISH_CONFIG = "~/.config/fish/config.fish"
 echo -e "###\nSetting fish shell\n###"
-if [[ -e $FISH_CONFIG  ]] then
+if [[ -e $FISH_CONFIG  ]]
+then
     mv $FISH_CONFIG $FISH_CONFIG.backup
 fi
 ln ~/environment/config.fish $FISH_CONFIG
@@ -52,7 +55,8 @@ $SUDO chsh -s /usr/bin/fish
 # ---
 TMUX_CONFIG = "~/.tmux.conf"
 echo -e "###\nSetting fish shell\n###"
-if [[ -e $TMUX_CONFIG ]] then
+if [[ -e $TMUX_CONFIG ]]
+then
     mv $TMUX_CONFIG $TMUX_CONFIG.backup
 fi
 ln ~/environment/.tmux.conf $TMUX_CONFIG
