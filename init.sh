@@ -10,10 +10,8 @@ then
     setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
-ls -al
 
 # install package
-cd ~
 echo -e "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
 $SUDO apt-get install -y curl vim fish tmux 
@@ -36,7 +34,7 @@ if [ -e $VIMRC  ]
 then
     mv $VIMRC $VIMRC.backup
 fi
-ln ~/environment/.vimrc $VIMRC || ln $PWD/.vimrc $VIMRC
+ln .vimrc $VIMRC
 source $VIMRC || echo "Fail execute source"
 vim -c 'PlugInstall' -c 'qa!'
 pip3 install python-language-server
@@ -49,7 +47,7 @@ if [ -e $FISH_CONFIG  ]
 then
     mv $FISH_CONFIG $FISH_CONFIG.backup
 fi
-ln ~/environment/config.fish $FISH_CONFIG || ln config.fish $FISH_CONFIG
+ln config.fish $FISH_CONFIG
 source $FISH_CONFIG
 $SUDO chsh -s /usr/bin/fish
 
@@ -62,7 +60,7 @@ if [ -e $TMUX_CONFIG ]
 then
     mv $TMUX_CONFIG $TMUX_CONFIG.backup
 fi
-ln ~/environment/.tmux.conf $TMUX_CONFIG || ln .tmux.conf $TMUX_CONFIG
+ln .tmux.conf $TMUX_CONFIG
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source $TMUX_CONFIG
 
@@ -75,7 +73,7 @@ yes | ~/.fzf/install
 
 # snippet
 echo -e "###\nSetting Snippet\n###"
-ln -s ~/environment/UltiSnips ~/.vim/ || ln -s UltiSnips ~/.vim/
+ln -s UltiSnips ~/.vim/
 
 # joplin
 # wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
