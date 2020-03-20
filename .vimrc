@@ -86,6 +86,7 @@ Plug 'skanehira/docker-compose.vim'
 Plug 'mhinz/vim-startify'
 Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'dense-analysis/ale'
 Plug 'mattn/vim-lsp-settings'
@@ -133,7 +134,7 @@ nnoremap <silent> <leader>F :FZF ~<cr>
 " vimwiki
 au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
 autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
-autocmd FileType vimwiki map <leader>g :VimwikiDiaryGenerateLinks
+" autocmd FileType vimwiki map <leader>g :VimwikiDiaryGenerateLinks
 
 let g:vimwiki_list = [{'path': '~/vimwiki/',
                     \ 'syntax': 'markdown', 'ext': '.md'}]
@@ -207,7 +208,7 @@ let g:startify_bookmarks = [
         \ ]
 " ag
 let g:ackprg = 'ag --nogroup --nocolor --column'
-nnoremap <silent> <leader>s :Ag ~<cr>
+nnoremap <silent> <leader>s :Ag <cr>
 
 " vimux
 map <silent> <Leader>r :VimuxPromptCommand<CR>
