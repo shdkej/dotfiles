@@ -56,16 +56,19 @@ $SUDO chsh -s /usr/bin/fish
 
 # tmux
 # ---
-TMUX_CONFIG=~/.tmux.conf
-echo -e "###\nSetting fish shell\n###"
-if [ -e $TMUX_CONFIG ]
+if [ $(whoami) != "runner" ]
 then
-    mv $TMUX_CONFIG $TMUX_CONFIG.backup
+    TMUX_CONFIG=~/.tmux.conf
+    echo -e "###\nSetting fish shell\n###"
+    if [ -e $TMUX_CONFIG ]
+    then
+        mv $TMUX_CONFIG $TMUX_CONFIG.backup
+    fi
+    ln .tmux.conf $TMUX_CONFIG
+    mkdir -p ~/.tmux/plugins/tpm
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    tmux source $TMUX_CONFIG
 fi
-ln .tmux.conf $TMUX_CONFIG
-mkdir -p ~/.tmux/plugins/tpm
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-tmux source $TMUX_CONFIG
 
 
 # fzf
