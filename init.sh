@@ -10,7 +10,7 @@ then
     setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
-echo "$PWD"
+ls -al
 
 # install package
 cd ~
