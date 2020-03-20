@@ -55,7 +55,8 @@ $SUDO chsh -s /usr/bin/fish
 
 # tmux
 # ---
-if [ -z $GIT_TESTER ]
+x=''
+if [ -n ${GIT_TESTER+x} ]
 then
     TMUX_CONFIG=~/.tmux.conf
     echo -e "###\nSetting fish shell\n###"
