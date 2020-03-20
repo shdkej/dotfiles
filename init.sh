@@ -63,6 +63,7 @@ then
     mv $TMUX_CONFIG $TMUX_CONFIG.backup
 fi
 ln .tmux.conf $TMUX_CONFIG
+mkdir -p ~/.tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source $TMUX_CONFIG
 
