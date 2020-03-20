@@ -17,6 +17,7 @@ $SUDO apt-get install -y curl vim fish tmux
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 $SUDO apt-get install -y nodejs python3 python3-pip
 
+[ $? -eq 0 ] || exit 1
 
 # install programming package
 echo -e "###\nProgramming Package Install\n###"
