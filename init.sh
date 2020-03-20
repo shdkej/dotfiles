@@ -7,8 +7,8 @@ then
     echo "$(whoami)"
     SUDO='sudo'
     # key mapping
-    setxkbmap -option keypad:pointerkeys # set number key || echo "set key"
-    setxkbmap -option caps:escape # Caps lock as esc || echo  "set key"
+    setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
+    setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
 
