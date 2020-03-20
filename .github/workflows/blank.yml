@@ -31,4 +31,6 @@ jobs:
       run: |
         rm -rf ~/.fzf ~/.vim/UltiSnips
         sudo sh init.sh github
+        sh cleaning.sh
+        sudo sh cleaning.sh
         echo "COMPLETE"
