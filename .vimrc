@@ -26,6 +26,7 @@ set ruler " 현재 커서 위치 표시
 set incsearch
 set term=xterm-256color
 set t_Co=256
+set cursorline
 " 마지막으로 수정된 곳에 커서를 위치함
 au BufReadPost *
 \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -72,7 +73,6 @@ call plug#begin('~/.vim/plugged')
 " 
 Plug 'junegunn/fzf', { 'do': './install --bin' } 
 Plug 'junegunn/fzf.vim' 
-Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline' 
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
@@ -98,9 +98,12 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'fatih/vim-go'
+
+Plug 'joshdick/onedark.vim'
 "
 call plug#end()
 
+colorscheme onedark
 
 "NERDTree
 nmap <F3> :NERDTreeToggle<CR>
@@ -211,7 +214,7 @@ let g:ackprg = 'ag --nogroup --nocolor --column'
 nnoremap <silent> <leader>s :Ag <cr>
 
 " vimux
-map <silent> <Leader>r :VimuxPromptCommand<CR>
+map <silent> <leader>r :VimuxPromptCommand("echo 'test'")<CR>
 
 "ultisnips
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -226,6 +229,7 @@ if has('python3')
         \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
         \ }))
 endif
+
 "ALE
 let g:ale_linters = {
     \   'python': ['flake8', 'pylint']
@@ -336,7 +340,8 @@ let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_deadline = "5s"
 
+" python command
+autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
+
 " Markdown Preview
 nmap <leader>m <Plug>MarkdownPreviewToggle
-
-colorscheme molokai

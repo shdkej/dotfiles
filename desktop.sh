@@ -15,6 +15,9 @@ wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.
 unzip D2Coding-1.2.zip
 sudo gnome-font-viewer D2Coding.ttf
 
+# rclone
+rclone 
+
 ##
 echo "## touchpad non click setting"
 echo "## Changeg terminal font"

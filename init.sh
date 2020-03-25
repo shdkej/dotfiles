@@ -5,24 +5,28 @@ SUDO=''
 if [ "$(whoami)" != "root" ]
 then
     SUDO='sudo'
-    # key mapping
-    setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
-    setxkbmap -option caps:escape || echo "set key" # Caps lock as esc
 fi
 
 
 # install package
 echo -e "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
-$SUDO apt-get install -y curl vim fish tmux 
+$SUDO apt-get install -y curl vim fish tmux xcape
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 $SUDO apt-get install -y nodejs python3 python3-pip
+$SUDO add-apt-repository ppa:longsleep/golang-backports
+$SUDO apt update
+$SUDO apt install -y golang-go
 
 
 # install programming package
 echo -e "###\nProgramming Package Install\n###"
 $SUDO apt-get install -y ctags flake8 silversearcher-ag
 
+# key mapping
+setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
+setxkbmap -option 'caps:ctrl_modifier' \
+    && xcape -e 'Caps_Lock=Escape' || echo "set key" # Caps lock as esc, when pressed as Ctrl
 
 # vim plug
 VIMRC=~/.vimrc
@@ -56,7 +60,7 @@ $SUDO chsh -s /usr/bin/fish
 # tmux
 # ---
 x=''
-if [ -z ${1+x} ]
+if [ -z ${1+x} ] # has any argument with run script then skip
 then
     TMUX_CONFIG=~/.tmux.conf
     echo -e "###\nSetting fish shell\n###"
@@ -79,7 +83,7 @@ yes | ~/.fzf/install
 
 # snippet
 echo -e "###\nSetting Snippet\n###"
-ln -s UltiSnips ~/.vim/
+ln -s UltiSnips/ ~/.vim/UltiSnips
 
 # joplin
 # wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
