@@ -1,7 +1,9 @@
 #!/bin/bash
+
 set -u -e
 
 SUDO=''
+x=''
 if [ "$(whoami)" != "root" ]
 then
     SUDO='sudo'
@@ -9,21 +11,21 @@ fi
 
 
 # install package
-echo -e "###\nPackage Install\n###"
+echo "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
 $SUDO apt-get install -y curl vim fish tmux xcape
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 $SUDO apt-get install -y nodejs python3 python3-pip
-if [ -z $1 ]
+if [ -z ${1+x} ] # has any argument with run script then skip
 then
-    $SUDO add-apt-repository ppa:longsleep/golang-backports
-    $SUDO apt update
+    $SUDO add-apt-repository -y ppa:longsleep/golang-backports
+    $SUDO apt update -y
     $SUDO apt install -y golang-go
 fi
 
 
 # install programming package
-echo -e "###\nProgramming Package Install\n###"
+echo "###\nProgramming Package Install\n###"
 $SUDO apt-get install -y ctags flake8 silversearcher-ag
 
 # key mapping
@@ -33,13 +35,13 @@ setxkbmap -option 'caps:ctrl_modifier' \
 
 # vim plug
 VIMRC=~/.vimrc
-echo -e "###\nSetting VIM\n###"
+echo "###\nSetting VIM\n###"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 if [ -e $VIMRC  ]
 then
-    mv $VIMRC $VIMRC.backup
+    mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
 ln .vimrc $VIMRC
 source $VIMRC || echo "Fail execute source"
@@ -49,10 +51,10 @@ pip3 install python-language-server
 
 # fish
 FISH_CONFIG=~/.config/fish/config.fish
-echo -e "###\nSetting fish shell\n###"
+echo "###\nSetting fish shell\n###"
 if [ -e $FISH_CONFIG  ]
 then
-    mv $FISH_CONFIG $FISH_CONFIG.backup
+    mv $FISH_CONFIG $FISH_CONFIG.backup || rm $FISH_CONFIG
 fi
 mkdir -p ~/.config/fish
 ln config.fish $FISH_CONFIG
@@ -62,19 +64,18 @@ $SUDO chsh -s /usr/bin/fish
 
 # tmux
 # ---
-x=''
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
     TMUX_CONFIG=~/.tmux.conf
-    echo -e "###\nSetting fish shell\n###"
+    echo -e "###\nSetting tmux\n###"
     if [ -e $TMUX_CONFIG ]
     then
-        mv $TMUX_CONFIG $TMUX_CONFIG.backup
+        mv $TMUX_CONFIG $TMUX_CONFIG.backup || rm $TMUX_CONFIG
     fi
     ln .tmux.conf $TMUX_CONFIG
     mkdir -p ~/.tmux/plugins/tpm
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    tmux source $TMUX_CONFIG
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || echo ""
+    #tmux source $TMUX_CONFIG
 fi
 
 
