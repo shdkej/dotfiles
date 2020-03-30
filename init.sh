@@ -14,9 +14,12 @@ echo -e "###\nPackage Install\n###"
 $SUDO apt-get install -y curl vim fish tmux xcape
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 $SUDO apt-get install -y nodejs python3 python3-pip
-$SUDO add-apt-repository ppa:longsleep/golang-backports
-$SUDO apt update
-$SUDO apt install -y golang-go
+if [ -z $1 ]
+then
+    $SUDO add-apt-repository ppa:longsleep/golang-backports
+    $SUDO apt update
+    $SUDO apt install -y golang-go
+fi
 
 
 # install programming package

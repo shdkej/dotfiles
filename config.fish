@@ -4,16 +4,24 @@ set Theme Terlar
 set -g FZF_CTRL_T_COMMAND "command find -L \$dir -type f 2> /dev/null | sed '1d; s#^\./##'"
 set -x FZF_DEFAULT_OPS "--extended"
 set -x GOPATH "$HOME/workspace/golang"
-set -x PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+set PATH $PATH /usr/bin /bin /usr/sbin /sbin /usr/local/bin
+set PATH $PATH $GOPATH/bin $GOROOT/bin
 
 function da 
     docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}' | read -l cid
     docker start "$cid"
-    docker exec -it "$cid" fish
+    docker exec -it "$cid" fish; or docker exec -it "$cid" bash
 end
 
 function dr
     docker run -it --name $1 ubuntu
+end
+
+function ww
+    set sug (hello)
+    vi $sug
+#hello | fzf --multi -q "$1" | string split '\n' | read -l file
+#[ "$file" ]; and echo $file
 end
 
 # Copy purify and edit

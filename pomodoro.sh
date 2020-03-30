@@ -12,13 +12,14 @@ echo $TEXT >> $DIR/$FILE
 # capture screen
 DATETIME=$(date '+%F_%H-%M')
 SCREENSHOT=$DATETIME.png
+SCREENSHOTDIR=~/vimwiki/screenshot
 
 if [ $1 = 'pomodoro' ] && [ $2 = 'complete' ]
 then
-    gnome-screenshot -f $DIR/$SCREENSHOT
+    gnome-screenshot -f $SCREENSHOTDIR/$SCREENSHOT
     # image link to file
-    echo ![$DATETIME]'('$SCREENSHOT')' >> $DIR/$FILE
-    echo [[local:$DIR/$SCREENSHOT]] >> $DIR/$FILE
+    echo ![$DATETIME]'('../screenshot/$SCREENSHOT')' >> $DIR/$FILE
+    echo [[local:$SCREENSHOTDIR/$SCREENSHOT]] >> $DIR/$FILE
 fi
 
 echo 'script done'

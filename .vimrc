@@ -68,6 +68,10 @@ au BufEnter *.{md,vimwiki} setlocal foldexpr=MarkdownLevel()
 au BufEnter *.{md,vimwiki} setlocal foldmethod=expr
 au BufEnter *.{md,vimwiki} normal zR
 
+set completeopt+=preview
+set completeopt+=menuone
+set completeopt+=longest
+
 " Plug
 call plug#begin('~/.vim/plugged') 
 " 
@@ -127,12 +131,18 @@ let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보
 let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer 
 nnoremap <C-S-t> :enew<CR>
 nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
-nnoremap <silent> <leader>5 :bprevious!<CR>
-nnoremap <silent> <leader>6 :bnext!<CR>
+nnoremap <silent> <F5> :bprevious!<CR>
+nnoremap <silent> <F6> :bnext!<CR>
 
 "fzf
 nnoremap <silent> <leader>f :FZF --preview=head\ -10\ {}<cr>
 nnoremap <silent> <leader>F :FZF ~<cr>
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+" Open files in vertical horizontal split
+nnoremap <silent> <Leader>v :call fzf#run({
+\   'right': winwidth('.') / 2,
+\   'sink':  'vertical botright split' })<CR>
 
 " vimwiki
 au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
@@ -213,6 +223,8 @@ let g:startify_bookmarks = [
 let g:ackprg = 'ag --nogroup --nocolor --column'
 nnoremap <silent> <leader>s :Ag <cr>
 
+nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
+
 " vimux
 map <silent> <leader>r :VimuxPromptCommand("echo 'test'")<CR>
 
@@ -288,6 +300,8 @@ augroup lsp_install
     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+let g:lsp_signature_help_enabled = 0
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('~/vim-lsp.log')
 
@@ -307,7 +321,7 @@ inoremap <silent><expr> <TAB>
   \ <SID>check_back_space() ? "\<TAB>" :
   \ asyncomplete#force_refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-set completeopt+=preview
+set completeopt-=preview
 
 " vim-go
 map <C-n> :cnext<CR>
@@ -326,7 +340,6 @@ autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-autocmd BufNewFile, BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 let g:go_fmt_command = "goimports"
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
@@ -334,11 +347,12 @@ let g:go_highlight_calls = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraint = 1
 let g:rehash256 = 1
-let g:molokai_original = 1
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+"let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_deadline = "5s"
+let g:go_version_warning = 0
+let g:go_code_completion_enabled = 0
 
 " python command
 autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)

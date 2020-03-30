@@ -176,6 +176,11 @@ function dr() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+fe() (
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+)
+
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND=''
 export PATH=$PATH:$HOME/.garden/bin
