@@ -50,24 +50,10 @@ match OverLength /\%81v.\+/
 set textwidth=80
 
 " add yaml stuffs
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+" au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-" Markdown
-function! MarkdownLevel()
-    if getline(v:lnum) =~ '^## .*$'
-        return ">1"
-    endif
-    if getline(v:lnum) =~ '^#### .*$'
-        return ">2"
-    endif
-    return "="
-endfunction
-
-au BufEnter *.{md,vimwiki} setlocal foldexpr=MarkdownLevel()
-au BufEnter *.{md,vimwiki} setlocal foldmethod=expr
-au BufEnter *.{md,vimwiki} normal zR
-
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 set completeopt+=preview
 set completeopt+=menuone
 set completeopt+=longest
@@ -102,10 +88,17 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'fatih/vim-go'
+Plug 'hashivim/vim-terraform', {'for': 'tf'}
 
 Plug 'joshdick/onedark.vim'
 "
 call plug#end()
+
+let vim_plug_just_install = 0
+if vim_plug_just_install
+    :PlugInstall
+    let vim_plug_just_install = 1
+endif
 
 colorscheme onedark
 
@@ -144,13 +137,17 @@ nnoremap <silent> <Leader>v :call fzf#run({
 \   'right': winwidth('.') / 2,
 \   'sink':  'vertical botright split' })<CR>
 
-" vimwiki
-au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
-autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
-" autocmd FileType vimwiki map <leader>g :VimwikiDiaryGenerateLinks
+command! -bang -nargs=* Ag
+  \ call fzf#vim#grep(
+  \   'ag --color '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
 
+" vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/',
                     \ 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_folding='expr'
+"autocmd FileType vimwiki set foldlevelstart=1 #TODO
+set foldlevelstart=1
 
 function! LastModified()
     if g:md_modify_disabled
@@ -210,6 +207,10 @@ augroup vimwikiauto
     autocmd BufRead,BufNewFile *.md call NewTemplate()
     autocmd FileType vimwiki inoremap <C-s> <C-r>=vimwiki#tbl#kbd_tab()<CR>
     autocmd FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
+    command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
+    au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
+    autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
+    autocmd FileType vimwiki set spell spelllang=en_us
 augroup END
 
 let g:md_modify_disabled = 0
@@ -218,12 +219,16 @@ let g:md_modify_disabled = 0
 let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
         \ { 'd': '~/vimwiki/diary/diary.md' },
+        \ { 'w': '~/vimwiki/index.md' },
+        \ { 'j': '~/vimwiki/journal.md' },
         \ ]
 " ag
-let g:ackprg = 'ag --nogroup --nocolor --column'
-nnoremap <silent> <leader>s :Ag <cr>
-
+nnoremap <silent> <leader>s :Ag <CR>
 nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
+
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+nnoremap <silent> <F12> :GREP<CR>
 
 " vimux
 map <silent> <leader>r :VimuxPromptCommand("echo 'test'")<CR>
@@ -303,7 +308,7 @@ augroup END
 
 let g:lsp_signature_help_enabled = 0
 let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('~/vim-lsp.log')
+let g:lsp_log_file = expand('/tmp/vim-lsp.log')
 
 "asyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"

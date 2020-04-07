@@ -23,3 +23,6 @@ then
 fi
 
 echo 'script done'
+
+find $SCREENSHOTDIR -name "*.png" -type f -mtime +3
+echo 'delete old file'

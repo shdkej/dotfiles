@@ -13,9 +13,9 @@ fi
 # install package
 echo "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
+$SUDO apt-get install -y nodejs python3 python3-pip
 $SUDO apt-get install -y curl vim fish tmux xcape
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
-$SUDO apt-get install -y nodejs python3 python3-pip
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
     $SUDO add-apt-repository -y ppa:longsleep/golang-backports
@@ -80,14 +80,18 @@ fi
 
 
 # fzf
-echo -e "###\nInstall fzf\n###"
+echo "###\nInstall fzf\n###"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
 
 
 # snippet
-echo -e "###\nSetting Snippet\n###"
-ln -s UltiSnips/ ~/.vim/UltiSnips
+echo "###\nSetting Snippet\n###"
+ln -s ~/UltiSnips/ ~/.vim/UltiSnips
+
+echo "###\nCopy below Code\n###"
+echo "###\nsource ~/.vimrc && source ~/.config/fish/config.fish\n###"
+echo "tmux source ~/.tmux.conf"
 
 # joplin
 # wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash

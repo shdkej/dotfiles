@@ -7,6 +7,8 @@ services:
 		#build: ${3:./}
 		volumes:
 			- ./$1:/app
+		tty: true
+		#stdin_open: true
 endsnippet
 snippet rc "Replication Controller" !b
 # WARNING, use Deployments -- ReplicationController is being replaced.

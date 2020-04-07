@@ -11,13 +11,14 @@ sudo apt-get install -y gnome-shell-pomodoro
 # theme
 
 # font
-wget
-https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip ~/
-unzip ~/D2Coding-1.2.zip ~/
+wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip ~/
+unzip ~/D2Coding-1.2.zip -d ~/
 #sudo gnome-font-viewer D2Coding.ttf
 
 # rclone
 sudo apt-get install -y rclone i3
+rclone copy onedrive:workpsace ~/workspace
+rclone copy onedrive:vimwiki ~/vimwiki
 #echo "0 */1   * * *   root    /home/sh/environment/rclone.sh >/dev/null 2>&1" >> /etc/crontab
 
 ##
