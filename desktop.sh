@@ -21,6 +21,8 @@ rclone copy onedrive:workpsace ~/workspace
 rclone copy onedrive:vimwiki ~/vimwiki
 #echo "0 */1   * * *   root    /home/sh/environment/rclone.sh >/dev/null 2>&1" >> /etc/crontab
 
+sudo crontab /home/sh/environment/crontab
+
 ##
 echo "## touchpad non click setting"
 echo "## Changeg terminal font"

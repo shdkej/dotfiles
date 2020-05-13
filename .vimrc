@@ -58,12 +58,23 @@ set completeopt+=preview
 set completeopt+=menuone
 set completeopt+=longest
 
+"au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
+
+" searching md file related tag
+function! SearchingMD()
+    let l:pattern = getline('.')
+    ":echom l:pattern
+    :tselect ('/') . l:pattern
+endfunction
+nnoremap <silent> <F2> :call SearchingMD()<CR>
+"autocmd BufRead,BufNewFile *.md call SearchingMD()
+
+
 " Plug
 call plug#begin('~/.vim/plugged') 
 " 
 Plug 'junegunn/fzf', { 'do': './install --bin' } 
 Plug 'junegunn/fzf.vim' 
-Plug 'vim-airline/vim-airline' 
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -76,7 +87,9 @@ Plug 'skanehira/docker-compose.vim'
 Plug 'mhinz/vim-startify'
 Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'jiangmiao/auto-pairs'
+Plug 'vim-airline/vim-airline' 
+"Plug 'jiangmiao/auto-pairs'
+Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'dense-analysis/ale'
 Plug 'mattn/vim-lsp-settings'
@@ -115,9 +128,28 @@ let g:ctrlp_custom_ignore = {
 
 "tagbar
 map <F4> :TagbarToggle<CR>
+let g:tagbar_type_markdown = {
+            \ 'ctagstype' : 'markdown',
+            \ 'kinds' : [
+                \ 'h:headings',
+                \ 'l:links',
+                \ 'i:images'
+            \],
+            \ "sort" : 0
+            \ }
+let g:tagbar_type_vimwiki = {
+            \ 'ctagstype' : 'markdown',
+            \ 'kinds' : [
+                \ 'h:headings',
+                \ 'l:links',
+                \ 'i:images'
+            \],
+            \ "sort" : 0
+            \ }
 
 "airline
 "use buffer
+let g:airline_disable_statusline = 1
 let g:airline#extensions#tabline#enabled = 1              " vim-airline 버퍼 목록 켜기
 let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 목록 파일명만 출력
 let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보여준다
@@ -126,6 +158,8 @@ nnoremap <C-S-t> :enew<CR>
 nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
 nnoremap <silent> <F5> :bprevious!<CR>
 nnoremap <silent> <F6> :bnext!<CR>
+inoremap <silent> <F5> <C-O>:bprevious!<CR>
+inoremap <silent> <F6> <C-O>:bnext!<CR>
 
 "fzf
 nnoremap <silent> <leader>f :FZF --preview=head\ -10\ {}<cr>
@@ -220,8 +254,15 @@ let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
         \ { 'd': '~/vimwiki/diary/diary.md' },
         \ { 'w': '~/vimwiki/index.md' },
-        \ { 'j': '~/vimwiki/journal.md' },
+        \ { 'j': '~/vimwiki/Journal.md' },
         \ ]
+let g:startify_lists = [
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+      \ { 'type': 'files',     'header': ['   MRU']            },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ ]
 " ag
 nnoremap <silent> <leader>s :Ag <CR>
 nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
@@ -229,6 +270,7 @@ nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 nnoremap <silent> <F12> :GREP<CR>
+vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
 
 " vimux
 map <silent> <leader>r :VimuxPromptCommand("echo 'test'")<CR>
@@ -345,19 +387,20 @@ autocmd FileType go nmap <leader>t  <Plug>(go-test)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-let g:go_fmt_command = "goimports"
+"let g:go_fmt_command = "goimports"
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_calls = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraint = 1
 let g:rehash256 = 1
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_autosave = 1
+"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+"let g:go_metalinter_autosave = 1
 "let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_deadline = "5s"
+"let g:go_metalinter_deadline = "5s"
 let g:go_version_warning = 0
 let g:go_code_completion_enabled = 0
+let g:go_bin_path = "/home/sh/golang/bin"
 
 " python command
 autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
