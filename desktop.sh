@@ -19,9 +19,9 @@ unzip ~/D2Coding-1.2.zip -d ~/
 sudo apt-get install -y rclone i3
 rclone copy onedrive:workpsace ~/workspace
 rclone copy onedrive:vimwiki ~/vimwiki
-#echo "0 */1   * * *   root    /home/sh/environment/rclone.sh >/dev/null 2>&1" >> /etc/crontab
+#echo "0 */1   * * *   root    /home/sh/dotfiles/rclone.sh >/dev/null 2>&1" >> /etc/crontab
 
-sudo crontab /home/sh/environment/crontab
+sudo crontab /home/sh/dotfiles/crontab
 
 ##
 echo "## touchpad non click setting"

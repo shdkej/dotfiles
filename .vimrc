@@ -89,7 +89,6 @@ Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'vim-airline/vim-airline' 
 "Plug 'jiangmiao/auto-pairs'
-Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'dense-analysis/ale'
 Plug 'mattn/vim-lsp-settings'

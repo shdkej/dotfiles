@@ -43,7 +43,7 @@ if [ -e $VIMRC  ]
 then
     mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
-ln ~/environment/.vimrc $VIMRC
+ln ~/dotfiles/.vimrc $VIMRC
 source $VIMRC || echo "Fail execute source"
 #vim +'PlugInstall' +qall > /dev/null
 pip3 install python-language-server
@@ -57,7 +57,7 @@ then
     mv $FISH_CONFIG $FISH_CONFIG.backup || rm $FISH_CONFIG
 fi
 mkdir -p ~/.config/fish
-ln ~/environment/config.fish $FISH_CONFIG
+ln ~/dotfiles/config.fish $FISH_CONFIG
 source $FISH_CONFIG || echo "Fail execute source"
 $SUDO chsh -s /usr/bin/fish
 
@@ -72,7 +72,7 @@ then
     then
         mv $TMUX_CONFIG $TMUX_CONFIG.backup || rm $TMUX_CONFIG
     fi
-    ln ~/environment/.tmux.conf $TMUX_CONFIG
+    ln ~/dotfiles/.tmux.conf $TMUX_CONFIG
     mkdir -p ~/.tmux/plugins/tpm
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || echo ""
     #tmux source $TMUX_CONFIG
@@ -87,7 +87,7 @@ yes | ~/.fzf/install
 
 # snippet
 echo "###\nSetting Snippet\n###"
-ln -s ~/environment/UltiSnips/ ~/.vim/UltiSnips
+ln -s ~/dotfiles/UltiSnips/ ~/.vim/UltiSnips
 
 echo "###\nCopy below Code\n###"
 echo "###\nsource ~/.vimrc && source ~/.config/fish/config.fish\n###"
