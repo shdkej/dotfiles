@@ -10,7 +10,7 @@ then
 fi
 
 DOTFILES=~/dotfiles
-if [ $1 == 'github' ] # has any argument with run script then skip
+if [ "$1" == "github" ] # has any argument with run script then skip
 then
     DOTFILES=~/work/dotfiles/dotfiles
 fi
