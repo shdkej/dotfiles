@@ -85,7 +85,7 @@ setxkbmap -option 'caps:ctrl_modifier' \
     && xcape -e 'Caps_Lock=Escape'
 xset r rate 250 60
 
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
