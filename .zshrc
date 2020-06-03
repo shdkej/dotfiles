@@ -4,12 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/$USER/.oh-my-zsh"
 
-export GOPATH="$HOME/workspace/golang"
-export GOROOT="/usr/lib/go-1.13"
-export GOBIN="$GOPATH/bin"
-
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -115,6 +109,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias kb="kubectl"
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
 # fzf
 # cd extend
@@ -197,3 +194,15 @@ function dl() {
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND=''
 export PATH=$PATH:$HOME/.garden/bin
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/vault vault
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export GOPATH="$HOME/workspace/golang"
+export GOROOT="/usr/lib/go-1.13"
+export GOBIN="$GOPATH/bin"
+
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN
