@@ -19,9 +19,9 @@ echo "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
 $SUDO apt-get install -y nodejs python3 python3-pip
 $SUDO apt-get install -y curl vim zsh tmux xcape
-curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
+    curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
     wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
     $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
     $SUDO mv go /usr/local
@@ -33,12 +33,6 @@ fi
 # install programming package
 echo "###\nProgramming Package Install\n###"
 $SUDO apt-get install -y ctags flake8 silversearcher-ag
-
-# key mapping
-setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
-setxkbmap -option 'caps:ctrl_modifier' \
-    && xcape -e 'Caps_Lock=Escape' || echo "set key" # Caps lock as esc, when pressed as Ctrl
-xset r rate 250 60
 
 # vim plug
 VIMRC=~/.vimrc
