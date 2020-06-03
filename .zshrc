@@ -15,6 +15,7 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="juanghurtado"
+#ZSH_THEME="amuse"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -85,7 +86,7 @@ setxkbmap -option 'caps:ctrl_modifier' \
     && xcape -e 'Caps_Lock=Escape'
 xset r rate 250 60
 
-#source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -112,11 +113,12 @@ xset r rate 250 60
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
 alias kb="kubectl"
 
 # fzf
 # cd extend
-function cd() {
+function cdf() {
     if [[ "$#" != 0 ]]; then
         builtin cd "$@";
         return

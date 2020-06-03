@@ -9,10 +9,10 @@ then
     SUDO='sudo'
 fi
 
-DOTFILES=~
-if [ -z ${1+x} ] # has any argument with run script then skip
+DOTFILES=~/dotfiles
+if [ $1 == 'github' ] # has any argument with run script then skip
 then
-    DOTFILES='~/dotfiles'
+    DOTFILES=~/work/dotfiles/dotfiles
 fi
 # install package
 echo "###\nPackage Install\n###"
