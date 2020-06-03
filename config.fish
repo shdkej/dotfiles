@@ -1,14 +1,25 @@
+
+
+alias kb="kubectl"
 alias jl="joplin"
 alias jln="joplin mknote"
+
+
 set Theme Terlar
 set -g FZF_CTRL_T_COMMAND "command find -L \$dir -type f 2> /dev/null | sed '1d; s#^\./##'"
 set -x FZF_DEFAULT_OPS "--extended \
     --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 \
     --color info:150,prompt:110,spinner:150,pointer:167,marker:174"
 set -x GOPATH "$HOME/workspace/golang"
-set -x GOROOT "/usr/lib/go-1.14"
+set -x GOROOT "/usr/lib/go-1.13"
+set -x GOBIN "$GOPATH/bin"
 set PATH $GOROOT/bin $PATH
 set PATH $GOPATH/bin $PATH
+set PATH $GOBIN $PATH
+setxkbmap -option keypad:pointerkeys
+setxkbmap -option 'caps:ctrl_modifier' \
+    && xcape -e 'Caps_Lock=Escape'
+xset r rate 250 60
 
 function da 
     docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}' | read -l cid

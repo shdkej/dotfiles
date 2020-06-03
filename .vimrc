@@ -177,7 +177,9 @@ command! -bang -nargs=* Ag
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/',
-                    \ 'syntax': 'markdown', 'ext': '.md'}]
+                    \ 'syntax': 'markdown', 'ext': '.md',
+                    \ 'auto_tags': 1
+                    \}]
 let g:vimwiki_folding='expr'
 "autocmd FileType vimwiki set foldlevelstart=1 #TODO
 set foldlevelstart=1
@@ -222,6 +224,7 @@ function! NewTemplate()
     call add(l:template, 'date    : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
     call add(l:template, 'updated : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
     call add(l:template, 'tags    : ')
+    call add(l:template, 'parent  : ')
     call add(l:template, 'toc     : true')
     call add(l:template, '---')
     call add(l:template, '')

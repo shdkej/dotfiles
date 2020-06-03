@@ -14,11 +14,13 @@ fi
 echo "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
 $SUDO apt-get install -y nodejs python3 python3-pip
-$SUDO apt-get install -y curl vim fish tmux xcape
+$SUDO apt-get install -y curl vim zsh tmux xcape
 curl -sL https://deb.nodesource.com/setup_13.x | $SUDO bash -
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
-    $SUDO add-apt-repository -y ppa:longsleep/golang-backports
+    wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
+    $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
+    $SUDO mv go /usr/local
     $SUDO apt update -y
     $SUDO apt install -y golang-go
 fi
@@ -32,6 +34,7 @@ $SUDO apt-get install -y ctags flake8 silversearcher-ag
 setxkbmap -option keypad:pointerkeys || echo "set key" # set number key
 setxkbmap -option 'caps:ctrl_modifier' \
     && xcape -e 'Caps_Lock=Escape' || echo "set key" # Caps lock as esc, when pressed as Ctrl
+xset r rate 250 60
 
 # vim plug
 VIMRC=~/.vimrc
@@ -48,19 +51,20 @@ source $VIMRC || echo "Fail execute source"
 #vim +'PlugInstall' +qall > /dev/null
 pip3 install python-language-server
 
-
-# fish
-FISH_CONFIG=~/.config/fish/config.fish
-echo "###\nSetting fish shell\n###"
-if [ -e $FISH_CONFIG  ]
+# oh-my-zsh
+ZSH_CONFIG=~/.zshrc
+if [ -e $ZSH_CONFIG  ]
 then
-    mv $FISH_CONFIG $FISH_CONFIG.backup || rm $FISH_CONFIG
+    mv $ZSH_CONFIG $ZSH_CONFIG.backup || rm $ZSH_CONFIG
 fi
-mkdir -p ~/.config/fish
-ln ~/dotfiles/config.fish $FISH_CONFIG
-source $FISH_CONFIG || echo "Fail execute source"
-$SUDO chsh -s /usr/bin/fish
-
+ln ~/dotfiles/.zshrc $ZSH_CONFIG
+echo "###INSTALL OH MY ZSH###"
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# zsh highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# zsh auto suggestions
+git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+chsh -s /usr/bin/zsh
 
 # tmux
 # ---
@@ -92,16 +96,3 @@ ln -s ~/dotfiles/UltiSnips/ ~/.vim/UltiSnips
 echo "###\nCopy below Code\n###"
 echo "###\nsource ~/.vimrc && source ~/.config/fish/config.fish\n###"
 echo "tmux source ~/.tmux.conf"
-
-# joplin
-# wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
-# NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
-# sudo ln -s ~/.joplin-bin/bin/joplin /usr/bin/joplin
-# joplin desktop app terminal app sync
-#mv \
-#~/.config/joplin \
-#~/.config/joplin-terminal-bak && \
-# ln -sfn \
-# ~/.config/joplin-desktop/ \
-# ~/.config/joplin
-

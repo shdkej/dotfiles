@@ -4,6 +4,12 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/$USER/.oh-my-zsh"
 
+export GOPATH="$HOME/workspace/golang"
+export GOROOT="/usr/lib/go-1.13"
+export GOBIN="$GOPATH/bin"
+
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -72,8 +78,12 @@ plugins=(
   git
   zsh-syntax-highlighting
   zsh-autosuggestions
-  docker
 )
+
+setxkbmap -option keypad:pointerkeys
+setxkbmap -option 'caps:ctrl_modifier' \
+    && xcape -e 'Caps_Lock=Escape'
+xset r rate 250 60
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,11 +112,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias jl="joplin"
-alias jln="jl mknote"
-alias jlt="jl mktodo"
-alias jle="jl export --format md /home/sh"
-alias gitc="git clone https://github.com/"
+alias kb="kubectl"
 
 # fzf
 # cd extend
@@ -180,6 +186,11 @@ fe() (
   IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 )
+
+function dl() {
+    docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}' | read -l cid
+    [ -n "$cid" ] && docker restart "$cid" && docker logs -f "$cid"
+}
 
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND=''

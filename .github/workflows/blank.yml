@@ -23,14 +23,12 @@ jobs:
     - uses: actions/checkout@v2
 
     # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: sh init.sh github
+    - name: Check File Directory
+      run: ls -al
 
     # Runs a set of commands using the runners shell
     - name: Run a multi-line script
       run: |
-        rm -rf ~/.fzf ~/.vim/UltiSnips
-        sudo sh init.sh github
+        sh init.sh github
         sh cleaning.sh
-        sudo sh cleaning.sh
         echo "COMPLETE"

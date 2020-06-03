@@ -1,7 +1,7 @@
 # vim
 if [[ -e ~/.vimrc.backup ]]
 then
-    echo -e "###\nVIM Cleaning\n###"
+    echo "###\nVIM Cleaning\n###"
     mv ~/.vimrc.backup ~/.vimrc
     vim -c 'PlugClean' -c 'qa!'
 fi
@@ -10,16 +10,16 @@ fi
 # tmux
 if [[ -e ~/.tmux.conf.backup ]]
 then
-    echo -e "###\nTMUX Cleaning\n###"
+    echo "###\nTMUX Cleaning\n###"
     mv ~/.tmux.conf.backup ~/.tmux.conf
     rm -rf ~/.tmux/plugins
     tmux source ~/.tmux.conf
 fi
 
 
-# fish
-if [[ -e ~/.config/fish/.config.fish.backup ]]
+# zsh
+if [[ -e ~/.zshrc.backup ]]
 then
-    echo -e "###\nFISH Cleaning\n###"
-    mv ~/.config/fish/.config.fish.backup ~/.config/fish/.config.fish
+    echo "###\nZSH Cleaning\n###"
+    mv ~/.zshrc.backup ~/.zshrc
 fi
