@@ -75,6 +75,7 @@ call plug#begin('~/.vim/plugged')
 " 
 Plug 'junegunn/fzf', { 'do': './install --bin' } 
 Plug 'junegunn/fzf.vim' 
+Plug 'junegunn/goyo.vim' 
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -88,6 +89,7 @@ Plug 'mhinz/vim-startify'
 Plug 'vimwiki/vimwiki'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'vim-airline/vim-airline' 
+Plug 'ferrine/md-img-paste.vim'
 "Plug 'jiangmiao/auto-pairs'
 
 Plug 'dense-analysis/ale'
@@ -183,6 +185,9 @@ let g:vimwiki_list = [{'path': '~/vimwiki/',
 let g:vimwiki_folding='expr'
 "autocmd FileType vimwiki set foldlevelstart=1 #TODO
 set foldlevelstart=1
+autocmd FileType markdown imap [[ [[<C-x><C-o>
+autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
+autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
 
 function! LastModified()
     if g:md_modify_disabled
@@ -193,6 +198,10 @@ function! LastModified()
         let n = min([10, line("$")])
         keepjumps exe '1,' . n . 's#^\(.\{,10}updated\s*: \).*#\1' .
             \ strftime('%Y-%m-%d %H:%M:%S +0100') . '#e'
+        "if expand('#:t:r') != 'index'
+        "    keepjumps exe '1, ' . n . 's#^\(.\{,10}parent\s*: \).*#\1' .
+        "        \ '[[' . expand('#:r') . ']]'
+        "endif
         call histdel('search', -1)
         call setpos('.', save_cursor)
     endif
@@ -218,14 +227,12 @@ function! NewTemplate()
 
     let l:template = []
     call add(l:template, '---')
-    call add(l:template, 'layout  : post')
     call add(l:template, 'title   : ')
     call add(l:template, 'summary : ')
     call add(l:template, 'date    : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
     call add(l:template, 'updated : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
     call add(l:template, 'tags    : ')
-    call add(l:template, 'parent  : ')
-    call add(l:template, 'toc     : true')
+    call add(l:template, 'parent  : [[' . expand("#:t:r") . "]]")
     call add(l:template, '---')
     call add(l:template, '')
     call add(l:template, '# ')
@@ -252,6 +259,7 @@ augroup END
 let g:md_modify_disabled = 0
 
 " startify
+nnoremap <silent> <leader>] :Startify <CR>
 let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
         \ { 'd': '~/vimwiki/diary/diary.md' },
@@ -373,9 +381,9 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 set completeopt-=preview
 
 " vim-go
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+map <C-n> :cnext<CR>:lnext<CR>
+map <C-m> :cprevious<CR><:lprevious<CR>
+nnoremap <leader>a :cclose<CR>:lclose<CR>
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -409,3 +417,9 @@ autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
 
 " Markdown Preview
 nmap <leader>m <Plug>MarkdownPreviewToggle
+
+" md-img-paste
+autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+
+" Goyo
+nnoremap <silent><F7> :Goyo<CR>

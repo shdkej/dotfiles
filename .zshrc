@@ -16,6 +16,7 @@ ZSH_THEME="juanghurtado"
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+KEYTIMEOUT=1
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -78,7 +79,7 @@ plugins=(
 setxkbmap -option keypad:pointerkeys
 setxkbmap -option 'caps:ctrl_modifier' \
     && xcape -e 'Caps_Lock=Escape'
-xset r rate 250 60
+xset r rate 350 60
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,6 +113,7 @@ alias kb="kubectl"
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias t='~/workspace/todotxt/todo.sh'
 
 # fzf
 # cd extend
@@ -191,7 +193,7 @@ function dl() {
     [ -n "$cid" ] && docker restart "$cid" && docker logs -f "$cid"
 }
 
-export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_OPTS="--extended"
 export FZF_DEFAULT_COMMAND=''
 export PATH=$PATH:$HOME/.garden/bin
 
@@ -205,4 +207,8 @@ export GOPATH="$HOME/workspace/golang"
 export GOROOT="/usr/lib/go-1.13"
 export GOBIN="$GOPATH/bin"
 
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true

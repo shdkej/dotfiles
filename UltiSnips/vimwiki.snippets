@@ -6,6 +6,7 @@ summary : ${2}
 date    : `date +%Y-%m-%d` `date +%H:%M:%S` +0100
 updated : `date +%Y-%m-%d` `date +%H:%M:%S` +0100
 tags    : ${3}
+parent  : "[" . `expand("#")` . "]"
 ---
 endsnippet
 
