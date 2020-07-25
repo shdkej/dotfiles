@@ -10,7 +10,7 @@ then
 fi
 
 DOTFILES=~/dotfiles
-if [ "$1" == "github" ] # has any argument with run script then skip
+if [ "${1+x}" == "github" ] # has any argument with run script then skip
 then
     DOTFILES=~/work/dotfiles/dotfiles
 fi
@@ -18,7 +18,7 @@ fi
 echo "###\nPackage Install\n###"
 #sudo apt-add-repository ppa:fish-shell/release-3
 $SUDO apt-get install -y nodejs python3 python3-pip
-$SUDO apt-get install -y curl vim zsh tmux xcape
+$SUDO apt-get install -y curl vim zsh tmux xcape wget
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
     curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
