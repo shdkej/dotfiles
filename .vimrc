@@ -93,16 +93,7 @@ Plug 'ferrine/md-img-paste.vim'
 "Plug 'jiangmiao/auto-pairs'
 
 Plug 'dense-analysis/ale'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'thomasfaingnaert/vim-lsp-snippets'
-Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-Plug 'fatih/vim-go'
-Plug 'hashivim/vim-terraform', {'for': 'tf'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'joshdick/onedark.vim'
 "
@@ -291,94 +282,22 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-tab>"
 let g:UltiSnipsEditSplit="vertical"
-if has('python3')
-    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-        \ 'name': 'ultisnips',
-        \ 'whitelist': ['*'],
-        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-        \ }))
-endif
 
 "ALE
 let g:ale_linters = {
     \   'python': ['flake8', 'pylint']
     \}
 
-"delimitMate
-let delimitMate_expand_cr=1
-
-"lsp
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-if executable('docker-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'docker-langserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
-        \ 'whitelist': ['dockerfile'],
-        \ })
-endif
-if executable('yaml-language-server')
-  augroup LspYaml
-   autocmd!
-   autocmd User lsp_setup call lsp#register_server({
-       \ 'name': 'yaml-language-server',
-       \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
-       \ 'whitelist': ['yaml', 'yaml.ansible'],
-       \ 'workspace_config': {
-       \   'yaml': {
-       \     'validate': v:true,
-       \     'hover': v:true,
-       \     'completion': v:true,
-       \     'customTags': [],
-       \     'schemas': {},
-       \     'schemaStore': { 'enable': v:true },
-       \   }
-       \ }
-       \})
-  augroup END
-endif
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> <f2> <plug>(lsp-rename)
-    " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-
-let g:lsp_signature_help_enabled = 0
-let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('/tmp/vim-lsp.log')
-
-"asyncomplete
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-let g:asyncomplete_auto_popup = 1
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-set completeopt-=preview
+" coc
+let g:coc_global_extensions = [
+  \ 'coc-go',
+  \ 'coc-yaml',
+  \ 'coc-docker',
+  \ ]
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " vim-go
 map <C-n> :cnext<CR>:lnext<CR>
