@@ -58,42 +58,44 @@ set completeopt+=preview
 set completeopt+=menuone
 set completeopt+=longest
 
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+au BufWritePre * :call TrimWhitespace()
+
 "au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
 " searching md file related tag
 function! SearchingMD()
-    let l:pattern = getline('.')
-    ":echom l:pattern
-    :tselect ('/') . l:pattern
+    :vsplit ~/wiki-blog/content/INBOX.md
 endfunction
 nnoremap <silent> <F2> :call SearchingMD()<CR>
-"autocmd BufRead,BufNewFile *.md call SearchingMD()
 
 
 " Plug
-call plug#begin('~/.vim/plugged') 
-" 
-Plug 'junegunn/fzf', { 'do': './install --bin' } 
-Plug 'junegunn/fzf.vim' 
-Plug 'junegunn/goyo.vim' 
+call plug#begin('~/.vim/plugged')
+"
+Plug 'junegunn/fzf', { 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'
-Plug 'benmills/vimux'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'mrk21/yaml-vim'
-Plug 'skanehira/docker-compose.vim'
 Plug 'mhinz/vim-startify'
+Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'vim-airline/vim-airline' 
 Plug 'ferrine/md-img-paste.vim'
-"Plug 'jiangmiao/auto-pairs'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'fatih/vim-go'
 
 Plug 'joshdick/onedark.vim'
 "
@@ -129,28 +131,18 @@ let g:tagbar_type_markdown = {
             \],
             \ "sort" : 0
             \ }
-let g:tagbar_type_vimwiki = {
-            \ 'ctagstype' : 'markdown',
-            \ 'kinds' : [
-                \ 'h:headings',
-                \ 'l:links',
-                \ 'i:images'
-            \],
-            \ "sort" : 0
-            \ }
 
-"airline
-"use buffer
+"airline (use buffer)
 let g:airline_disable_statusline = 1
 let g:airline#extensions#tabline#enabled = 1              " vim-airline 버퍼 목록 켜기
 let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 목록 파일명만 출력
 let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보여준다
-let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer 
+let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer
 nnoremap <C-S-t> :enew<CR>
 nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
 nnoremap <silent> <F5> :bprevious!<CR>
 nnoremap <silent> <F6> :bnext!<CR>
-inoremap <silent> <F5> <C-O>:bprevious!<CR>
+inoremap <silent> <F4> <C-O>:bprevious!<CR>
 inoremap <silent> <F6> <C-O>:bnext!<CR>
 
 "fzf
@@ -165,11 +157,12 @@ nnoremap <silent> <Leader>v :call fzf#run({
 
 command! -bang -nargs=* Ag
   \ call fzf#vim#grep(
-  \   'ag --color '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
+  \ 'ag --column --numbers --noheading --color --smart-case '.shellescape(<q-args>), 1,
+  \ fzf#vim#with_preview(), <bang>0)
 
 " vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/',
+let g:wiki_directory = '~/wiki-blog/content'
+let g:vimwiki_list = [{'path': g:wiki_directory,
                     \ 'syntax': 'markdown', 'ext': '.md',
                     \ 'auto_tags': 1
                     \}]
@@ -237,14 +230,15 @@ endfunction
 let g:vimwiki_table_mappings = 0
 
 augroup vimwikiauto
-    autocmd BufWritePre *.md call LastModified()
-    autocmd BufRead,BufNewFile *.md call NewTemplate()
-    autocmd FileType vimwiki inoremap <C-s> <C-r>=vimwiki#tbl#kbd_tab()<CR>
-    autocmd FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
+    au BufWritePre *.md call LastModified()
+    au BufRead,BufNewFile *.md call NewTemplate()
+    au FileType vimwiki inoremap <C-s> <C-r>=vimwiki#tbl#kbd_tab()<CR>
+    au FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
     command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
-    autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
-    autocmd FileType vimwiki set spell spelllang=en_us
+    "au FileType vimwiki set spell spelllang=en_us
+    au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
+    au FileType vimwiki nnoremap <silent><leader>q :e ~/wiki-blog/content/diary/<C-R>=strftime('%Y-%m-01') . '.md'<CR><CR>
 augroup END
 
 let g:md_modify_disabled = 0
@@ -253,9 +247,10 @@ let g:md_modify_disabled = 0
 nnoremap <silent> <leader>] :Startify <CR>
 let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
-        \ { 'd': '~/vimwiki/diary/diary.md' },
-        \ { 'w': '~/vimwiki/index.md' },
-        \ { 'j': '~/vimwiki/Journal.md' },
+        \ { 'd': g:wiki_directory . 'diary/diary.md' },
+        \ { 'w': g:wiki_directory . '/index.md' },
+        \ { 'j': g:wiki_directory . '/Journal.md' },
+        \ { 't': g:wiki_directory . '/INBOX.md' },
         \ ]
 let g:startify_lists = [
       \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
@@ -265,16 +260,12 @@ let g:startify_lists = [
       \ { 'type': 'commands',  'header': ['   Commands']       },
       \ ]
 " ag
-nnoremap <silent> <leader>s :Ag <CR>
+nnoremap <silent> <leader>s :Ag<SPACE>
 nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
-
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 nnoremap <silent> <F12> :GREP<CR>
 vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
-
-" vimux
-map <silent> <leader>r :VimuxPromptCommand("echo 'test'")<CR>
 
 "ultisnips
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -293,15 +284,19 @@ let g:coc_global_extensions = [
   \ 'coc-go',
   \ 'coc-yaml',
   \ 'coc-docker',
+  \ 'coc-ultisnips',
+  \ 'coc-python',
   \ ]
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+inoremap <silent><expr> <c-@> coc#refresh()
+au FileType vimwiki let b:coc_suggest_disable = 1
 
 " vim-go
 map <C-n> :cnext<CR>:lnext<CR>
-map <C-m> :cprevious<CR><:lprevious<CR>
+map <C-m> :cprevious<CR>:lprevious<CR>
+map <F4> :cnext<CR>:lnext<CR>
 nnoremap <leader>a :cclose<CR>:lclose<CR>
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()

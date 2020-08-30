@@ -114,6 +114,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias t='~/workspace/todotxt/todo.sh'
+alias python='python3'
+alias i='w3m duckduckgo.com'
 
 # fzf
 # cd extend
@@ -189,8 +191,9 @@ fe() (
 )
 
 function dl() {
-    docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}' | read -l cid
-    [ -n "$cid" ] && docker restart "$cid" && docker logs -f "$cid"
+    local cid
+    cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
+    [ -n "$cid" ] && docker restart "$cid" && docker logs -f --tail 10 "$cid"
 }
 
 export FZF_DEFAULT_OPTS="--extended"
@@ -207,7 +210,7 @@ export GOPATH="$HOME/workspace/golang"
 export GOROOT="/usr/lib/go-1.13"
 export GOBIN="$GOPATH/bin"
 
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin:/snap/bin
 
 # tabtab source for packages
 # uninstall by removing these lines

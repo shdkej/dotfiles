@@ -172,3 +172,5 @@ bindsym XF86AudioPrev exec playerctl previousbindsym XF86AudioMute exec --no-sta
 
 ## keyboard delay
 exec --no-startup-id xset r rate 200 30
+
+focus_follows_mouse no
