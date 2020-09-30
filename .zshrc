@@ -170,6 +170,12 @@ ff() {
      print -l $files[1]
   fi
 }
+
+fd() {
+    preview="git diff $@ --color=always -- {-1}"
+    git diff $@ --name-only | fzf -m --ansi --preview $preview
+}
+
 # docker start & docker exec
 function da() {
   local cid
@@ -194,6 +200,10 @@ function dl() {
     local cid
     cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
     [ -n "$cid" ] && docker restart "$cid" && docker logs -f --tail 10 "$cid"
+}
+
+function vr() {
+    vi ~/wiki-blog/content/$(ls ~/wiki-blog/content/ | shuf -n 1)
 }
 
 export FZF_DEFAULT_OPTS="--extended"

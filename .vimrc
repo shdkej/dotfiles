@@ -166,12 +166,12 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
                     \ 'syntax': 'markdown', 'ext': '.md',
                     \ 'auto_tags': 1
                     \}]
-let g:vimwiki_folding='expr'
-"autocmd FileType vimwiki set foldlevelstart=1 #TODO
-set foldlevelstart=1
+"let g:vimwiki_folding='expr'
+"set foldlevelstart=1
 autocmd FileType markdown imap [[ [[<C-x><C-o>
 autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
+"autocmd FileType vimwiki set foldlevelstart=1 #TODO
 
 function! LastModified()
     if g:md_modify_disabled
@@ -236,7 +236,7 @@ augroup vimwikiauto
     au FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
     command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
-    "au FileType vimwiki set spell spelllang=en_us
+    au FileType vimwiki set spell spelllang=en_us
     au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
     au FileType vimwiki nnoremap <silent><leader>q :e ~/wiki-blog/content/diary/<C-R>=strftime('%Y-%m-01') . '.md'<CR><CR>
 augroup END
