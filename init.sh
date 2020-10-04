@@ -25,6 +25,7 @@ then
     wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
     $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
     $SUDO mv go /usr/local
+    $SUDO rm go1.14.3.linux-amd64.tar.gz
     $SUDO apt update -y
     $SUDO apt install -y golang-go
 fi
@@ -55,13 +56,13 @@ if [ -e $ZSH_CONFIG  ]
 then
     mv $ZSH_CONFIG $ZSH_CONFIG.backup || rm $ZSH_CONFIG
 fi
-ln $DOTFILES/.zshrc $ZSH_CONFIG
 echo "###INSTALL OH MY ZSH###"
 yes | sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 # zsh highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # zsh auto suggestions
 git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+ln $DOTFILES/.zshrc $ZSH_CONFIG
 
 # tmux
 # ---

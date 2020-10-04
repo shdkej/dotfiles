@@ -11,7 +11,7 @@
 sudo gpasswd -a $USER input
 sudo apt-get install xdotool wmctrl
 sudo apt-get install libinput-tools
-git clone https://github.com/bulletmark/libinput-gestures.git ~/
+git clone https://github.com/bulletmark/libinput-gestures.git ~/libinput-gestures
 cd ~/libinput-gestures
 sudo make install
 libinput-gestures-setup autostart
@@ -20,7 +20,7 @@ ln ~/dotfiles/libinput-gestures.conf ~/.config/
 
 # rclone
 sudo apt-get install -y rclone
-rclone copy onedrive:workpsace ~/workspace
+rclone copy onedrive:workspace ~/workspace
 rclone copy onedrive:vimwiki ~/wiki-blog/content
 #echo "0 */1   * * *   root    /home/sh/dotfiles/rclone.sh >/dev/null 2>&1" >> /etc/crontab
 
