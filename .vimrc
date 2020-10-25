@@ -238,7 +238,8 @@ augroup vimwikiauto
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
     au FileType vimwiki set spell spelllang=en_us
     au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
-    au FileType vimwiki nnoremap <silent><leader>q :e ~/wiki-blog/content/diary/<C-R>=strftime('%Y-%m-01') . '.md'<CR><CR>
+    "au FileType vimwiki nnoremap <silent><leader>q :e ~/wiki-blog/content/diary/<C-R>=strftime('%Y-%m-01') . '.md'<CR><CR>
+    au FileType vimwiki nnoremap <silent><leader>q :VimwikiGoto diary/<C-R>=strftime('%Y-%m-01')<CR><CR>
 augroup END
 
 let g:md_modify_disabled = 0

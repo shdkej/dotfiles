@@ -14,26 +14,35 @@ if [ "${1+x}" == "github" ] # has any argument with run script then skip
 then
     DOTFILES=~/work/dotfiles/dotfiles
 fi
+
 # install package
-echo "###\nPackage Install\n###"
-#sudo apt-add-repository ppa:fish-shell/release-3
-$SUDO apt-get install -y nodejs python3 python3-pip
-$SUDO apt-get install -y curl vim zsh tmux xcape wget
+BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux xcape wget'
+DEVELOP_PACKAGES='ctags flake8 silversearcher-ag'
+if ! dpkg -s $BASIC_PACKAGES >/dev/null 2>&1; then
+    echo "###\nPackage Install\n###"
+    $SUDO apt update -y
+    $SUDO apt-get install -y $BASIC_PACKAGES
+
+    # install programming package
+    echo "###\nProgramming Package Install\n###"
+    $SUDO apt-get install -y $DEVELOP_PACKAGES
+fi
+
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
-    curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
-    wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
-    $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
-    $SUDO mv go /usr/local
-    $SUDO rm go1.14.3.linux-amd64.tar.gz
-    $SUDO apt update -y
-    $SUDO apt install -y golang-go
+    if ! dpkg -s golang-go >/dev/null 2>&1; then
+        curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
+        wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
+        $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
+        $SUDO mv go /usr/local
+        $SUDO rm go1.14.3.linux-amd64.tar.gz
+        $SUDO apt update -y
+        $SUDO apt install -y golang-go nodejs
+    fi
 fi
 
 
-# install programming package
-echo "###\nProgramming Package Install\n###"
-$SUDO apt-get install -y ctags flake8 silversearcher-ag
+RESULT=""
 
 # vim plug
 VIMRC=~/.vimrc
@@ -45,9 +54,9 @@ if [ -e $VIMRC  ]
 then
     mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
-ln $DOTFILES/.vimrc $VIMRC
-source $VIMRC || echo "Fail execute source"
-#vim +'PlugInstall' +qall > /dev/null
+ln $DOTFILES/.vimrc $VIMRC || RESULT="${RESULT}\n Fail vim link dotfile"
+source $VIMRC || RESULT="${RESULT}\n Fail vim execute source"
+vim +'PlugInstall' +qall > /dev/null || RESULT="${RESULT}\n Fail vim plugin install"
 pip3 install python-language-server
 
 # oh-my-zsh
@@ -62,7 +71,7 @@ yes | sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/t
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # zsh auto suggestions
 git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-ln $DOTFILES/.zshrc $ZSH_CONFIG
+ln $DOTFILES/.zshrc $ZSH_CONFIG || RESULT="${RESULT}\n Fail zsh link dotfile"
 
 # tmux
 # ---
@@ -74,9 +83,9 @@ then
     then
         mv $TMUX_CONFIG $TMUX_CONFIG.backup || rm $TMUX_CONFIG
     fi
-    ln $DOTFILES/.tmux.conf $TMUX_CONFIG
+    ln $DOTFILES/.tmux.conf $TMUX_CONFIG || RESULT="${RESULT}\n Fail tmux link dotfile"
     mkdir -p ~/.tmux/plugins/tpm
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || echo ""
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || RESULT="${RESULT}\n Fail tmux plugin manager install"
     #tmux source $TMUX_CONFIG
 fi
 
@@ -89,9 +98,10 @@ yes | ~/.fzf/install
 
 # snippet
 echo "###\nSetting Snippet\n###"
-ln -s $DOTFILES/UltiSnips/ ~/.vim/UltiSnips
 
-echo "###\nCopy below Code\n###"
-echo "###\nsource ~/.vimrc && source ~/.zshrc\n###"
+echo "${RESULT}"
+echo "###\n----Copy below Code\n###"
+echo "source ~/.vimrc && source ~/.zshrc"
 echo "tmux source ~/.tmux.conf"
 echo "chsh -s /usr/bin/zsh"
+ln -s $DOTFILES/UltiSnips/ ~/.vim/UltiSnips
