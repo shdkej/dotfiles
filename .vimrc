@@ -64,6 +64,8 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 
+"selected line move to Archive.md
+vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
 au BufWritePre * :call TrimWhitespace()
 
 "au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
@@ -100,12 +102,6 @@ Plug 'fatih/vim-go'
 Plug 'joshdick/onedark.vim'
 "
 call plug#end()
-
-let vim_plug_just_install = 0
-if vim_plug_just_install
-    :PlugInstall
-    let vim_plug_just_install = 1
-endif
 
 colorscheme onedark
 
@@ -159,6 +155,14 @@ command! -bang -nargs=* Ag
   \ call fzf#vim#grep(
   \ 'ag --column --numbers --noheading --color --smart-case '.shellescape(<q-args>), 1,
   \ fzf#vim#with_preview(), <bang>0)
+
+" ag
+nnoremap <silent> <leader>s :Ag<SPACE>
+nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+nnoremap <silent> <F12> :GREP<CR>
+vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
 
 " vimwiki
 let g:wiki_directory = '~/wiki-blog/content'
@@ -232,13 +236,12 @@ let g:vimwiki_table_mappings = 0
 augroup vimwikiauto
     au BufWritePre *.md call LastModified()
     au BufRead,BufNewFile *.md call NewTemplate()
-    au FileType vimwiki inoremap <C-s> <C-r>=vimwiki#tbl#kbd_tab()<CR>
+    au FileType vimwiki inoremap <C-d> <C-r>=vimwiki#tbl#kbd_tab()<CR>
     au FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
     command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
     au FileType vimwiki set spell spelllang=en_us
     au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
-    "au FileType vimwiki nnoremap <silent><leader>q :e ~/wiki-blog/content/diary/<C-R>=strftime('%Y-%m-01') . '.md'<CR><CR>
     au FileType vimwiki nnoremap <silent><leader>q :VimwikiGoto diary/<C-R>=strftime('%Y-%m-01')<CR><CR>
 augroup END
 
@@ -260,14 +263,6 @@ let g:startify_lists = [
       \ { 'type': 'sessions',  'header': ['   Sessions']       },
       \ { 'type': 'commands',  'header': ['   Commands']       },
       \ ]
-" ag
-nnoremap <silent> <leader>s :Ag<SPACE>
-nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
-set grepprg=ag\ --vimgrep\ $*
-set grepformat=%f:%l:%c:%m
-nnoremap <silent> <F12> :GREP<CR>
-vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
-
 "ultisnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"

@@ -16,7 +16,7 @@ then
 fi
 
 # install package
-BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux xcape wget'
+BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux xcape wget xclip'
 DEVELOP_PACKAGES='ctags flake8 silversearcher-ag'
 if ! dpkg -s $BASIC_PACKAGES >/dev/null 2>&1; then
     echo "###\nPackage Install\n###"
