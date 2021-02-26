@@ -63,12 +63,11 @@ fun! TrimWhitespace()
     keeppatterns %s/\s\+$//e
     call winrestview(l:save)
 endfun
+au BufWritePre * :call TrimWhitespace()
+"au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
 "selected line move to Archive.md
 vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
-au BufWritePre * :call TrimWhitespace()
-
-"au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
 " searching md file related tag
 function! SearchingMD()
@@ -118,15 +117,6 @@ let g:ctrlp_custom_ignore = {
 
 "tagbar
 map <F4> :TagbarToggle<CR>
-let g:tagbar_type_markdown = {
-            \ 'ctagstype' : 'markdown',
-            \ 'kinds' : [
-                \ 'h:headings',
-                \ 'l:links',
-                \ 'i:images'
-            \],
-            \ "sort" : 0
-            \ }
 
 "airline (use buffer)
 let g:airline_disable_statusline = 1
@@ -138,7 +128,7 @@ nnoremap <C-S-t> :enew<CR>
 nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
 nnoremap <silent> <F5> :bprevious!<CR>
 nnoremap <silent> <F6> :bnext!<CR>
-inoremap <silent> <F4> <C-O>:bprevious!<CR>
+inoremap <silent> <F5> <C-O>:bprevious!<CR>
 inoremap <silent> <F6> <C-O>:bnext!<CR>
 
 "fzf
@@ -157,7 +147,7 @@ command! -bang -nargs=* Ag
   \ fzf#vim#with_preview(), <bang>0)
 
 " ag
-nnoremap <silent> <leader>s :Ag<SPACE>
+map <leader>s :Ag<Space>
 nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
@@ -165,7 +155,7 @@ nnoremap <silent> <F12> :GREP<CR>
 vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
 
 " vimwiki
-let g:wiki_directory = '~/wiki-blog/content'
+let g:wiki_directory = '~/wiki-blog/content/'
 let g:vimwiki_list = [{'path': g:wiki_directory,
                     \ 'syntax': 'markdown', 'ext': '.md',
                     \ 'auto_tags': 1
@@ -175,7 +165,6 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
 autocmd FileType markdown imap [[ [[<C-x><C-o>
 autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
-"autocmd FileType vimwiki set foldlevelstart=1 #TODO
 
 function! LastModified()
     if g:md_modify_disabled
@@ -240,7 +229,7 @@ augroup vimwikiauto
     au FileType vimwiki inoremap <C-a> <Left><C-r>=vimwiki#tbl#kbd_shift_tab()<CR>
     command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
-    au FileType vimwiki set spell spelllang=en_us
+    "au FileType vimwiki set spell spelllang=en_us
     au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
     au FileType vimwiki nnoremap <silent><leader>q :VimwikiGoto diary/<C-R>=strftime('%Y-%m-01')<CR><CR>
 augroup END
@@ -292,7 +281,6 @@ au FileType vimwiki let b:coc_suggest_disable = 1
 " vim-go
 map <C-n> :cnext<CR>:lnext<CR>
 map <C-m> :cprevious<CR>:lprevious<CR>
-map <F4> :cnext<CR>:lnext<CR>
 nnoremap <leader>a :cclose<CR>:lclose<CR>
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -324,12 +312,23 @@ let g:go_bin_path = "/home/sh/golang/bin"
 
 " python command
 autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
+noremap <buffer> <F10> :exec '!python3 -m pdb' shellescape(@%, 1)<cr>
+nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
+autocmd FileType markdown nmap <buffer><silent> <leader>td :call TodoStart()<CR>
+nmap <buffer><silent> td :call TodoStart()<CR>
+
+function! TodoStart()
+    let l:command = 'add ' . getline('.')
+    "execute '!python3 ~/workspace/python/google-calendar-api/google-calendar.py ' . l:command
+    execute 'normal! A ' . strftime('%Y-%m-%d %H:%M:%S +0100')
+endfunction
 
 " Markdown Preview
 nmap <leader>m <Plug>MarkdownPreviewToggle
 
 " md-img-paste
 autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+autocmd FileType vimwiki nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
 
 " Goyo
 nnoremap <silent><F7> :Goyo<CR>

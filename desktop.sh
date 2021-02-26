@@ -21,12 +21,12 @@ ln ~/dotfiles/libinput-gestures.conf ~/.config/
 # rclone
 sudo apt-get install -y rclone
 rclone copy onedrive:workspace ~/workspace
+
+git clone https://github.com/shdkej/shdkej.github.io ~/wiki-blog
 rclone copy onedrive:vimwiki ~/wiki-blog/content
-#echo "0 */1   * * *   root    /home/sh/dotfiles/rclone.sh >/dev/null 2>&1" >> /etc/crontab
 
 sudo crontab /home/sh/dotfiles/crontab
 
-##
 echo "## Change terminal font"
 echo "## install Chrome"
 echo "## tmux source"

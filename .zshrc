@@ -80,6 +80,7 @@ setxkbmap -option keypad:pointerkeys
 setxkbmap -option 'caps:ctrl_modifier' \
     && xcape -e 'Caps_Lock=Escape'
 xset r rate 350 60
+xkbset ma 60 10 10 5 10
 
 source $ZSH/oh-my-zsh.sh
 
@@ -109,13 +110,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias kb="kubectl"
+alias k="kubectl"
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias t='~/workspace/todotxt/todo.sh'
 alias python='python3'
 alias i='w3m duckduckgo.com'
+alias ka='kubectl run -it curl --image=radial/busyboxplus:curl'
 
 # fzf
 # cd extend
@@ -199,7 +201,7 @@ fe() (
 function dl() {
     local cid
     cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
-    [ -n "$cid" ] && docker restart "$cid" && docker logs -f --tail 10 "$cid"
+    [ -n "$cid" ] && docker start "$cid" && docker logs -f --tail 10 "$cid"
 }
 
 function vr() {
@@ -225,3 +227,6 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin:/snap/bin
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+
+# Added by serverless binary installer
+export PATH="$HOME/.serverless/bin:$PATH"

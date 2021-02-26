@@ -3,11 +3,13 @@
 rclone sync /home/sh/wiki-blog/content onedrive:/vimwiki -v --log-file /tmp/rclone.log \
     --config /home/sh/.config/rclone/rclone.conf
     #--exclude ".git/**"
+    --exclude "node_modules/**"
 
 rclone sync /home/sh/workspace onedrive:/workspace -v --log-file /tmp/rclone.log \
     --config /home/sh/.config/rclone/rclone.conf \
     --exclude "**/bin/**" \
     --exclude "golang/pkg/**" \
     --exclude "**/.terraform/**" \
-    --exclude "node_modules/**"
+    --exclude "node_modules/**" \
+    --exclude "*.h5"
     #--exclude ".git/**"
