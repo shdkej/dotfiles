@@ -1,3 +1,11 @@
 snippet test "test"
 FROM node:10
 endsnippet
+
+snippet default "default"
+FROM ${1:ubuntu:latest}
+RUN apt-get update
+RUN useradd user
+USER user
+WORKDIR /home/user
+endsnippet

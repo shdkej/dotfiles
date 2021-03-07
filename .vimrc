@@ -141,10 +141,7 @@ nnoremap <silent> <Leader>v :call fzf#run({
 \   'right': winwidth('.') / 2,
 \   'sink':  'vertical botright split' })<CR>
 
-command! -bang -nargs=* Ag
-  \ call fzf#vim#grep(
-  \ 'ag --column --numbers --noheading --color --smart-case '.shellescape(<q-args>), 1,
-  \ fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Ag call fzf#vim#ag_raw(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 " ag
 map <leader>s :Ag<Space>
