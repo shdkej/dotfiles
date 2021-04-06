@@ -68,12 +68,7 @@ au BufWritePre * :call TrimWhitespace()
 
 "selected line move to Archive.md
 vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
-
-" searching md file related tag
-function! SearchingMD()
-    :vsplit ~/wiki-blog/content/INBOX.md
-endfunction
-nnoremap <silent> <F2> :call SearchingMD()<CR>
+nnoremap <silent> <F2> :VimwikiGoto INBOX<CR>
 
 
 " Plug
@@ -229,7 +224,7 @@ augroup vimwikiauto
     command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen | :cc
     au BufRead, BufNewFile *.vimwiki set filetype=vimwiki
     "au FileType vimwiki set spell spelllang=en_us
-    au FileType vimwiki inoremap <Down> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
+    au FileType vimwiki inoremap <C-R> <Down>=pumvisible() ? "\<lt>C-N>" : "\<lt>Down>"<CR>
     au FileType vimwiki nnoremap <silent><leader>q :VimwikiGoto diary/<C-R>=strftime('%Y-%m-01')<CR><CR>
 augroup END
 
