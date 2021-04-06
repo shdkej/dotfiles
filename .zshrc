@@ -230,3 +230,4 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin:/snap/bin
 
 # Added by serverless binary installer
 export PATH="$HOME/.serverless/bin:$PATH"
+export PATH="~/.npm-global/bin:$PATH"

@@ -1,6 +1,8 @@
 #/bin/bash
 
 # theme
+sudo add-apt-repository universe
+sudo apt install gnome-tweak-tool
 
 # font
 #wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip ~/

@@ -97,6 +97,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go'
+Plug 'hashivim/vim-terraform'
 
 Plug 'joshdick/onedark.vim'
 "
@@ -162,6 +163,7 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
 autocmd FileType markdown imap [[ [[<C-x><C-o>
 autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
+autocmd FileType markdown hi Title cterm=bold ctermfg=Yellow
 
 function! LastModified()
     if g:md_modify_disabled
