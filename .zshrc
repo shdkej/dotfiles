@@ -76,12 +76,6 @@ plugins=(
   zsh-autosuggestions
 )
 
-setxkbmap -option keypad:pointerkeys
-setxkbmap -option 'caps:ctrl_modifier' \
-    && xcape -e 'Caps_Lock=Escape'
-xset r rate 350 60
-xkbset ma 60 10 10 5 10
-
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -206,6 +200,13 @@ function dl() {
 
 function vr() {
     vi ~/wiki-blog/content/$(ls ~/wiki-blog/content/ | shuf -n 1)
+}
+
+function ggg() {
+    git-cz -a
+    standard-version
+    git push --follow-tags origin master
+    actions-cli
 }
 
 export FZF_DEFAULT_OPTS="--extended"
