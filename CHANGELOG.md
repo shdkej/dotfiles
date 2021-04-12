@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/shdkej/dotfiles/compare/v1.1.0...v1.2.0) (2021-04-12)
+
+
+### Features
+
+* 🎸 add keyboard script ([1cf1c68](https://github.com/shdkej/dotfiles/commit/1cf1c682d13655148b1d96ac130aa139dbbba348))
+
 ## 1.1.0 (2021-04-12)
 
 
