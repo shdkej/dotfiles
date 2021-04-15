@@ -112,6 +112,7 @@ alias t='~/workspace/todotxt/todo.sh'
 alias python='python3'
 alias i='w3m duckduckgo.com'
 alias ka='kubectl run -it curl --image=radial/busyboxplus:curl'
+alias gs='git status'
 
 # fzf
 # cd extend
