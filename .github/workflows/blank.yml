@@ -37,12 +37,6 @@ jobs:
     #    bash init.sh github
     #    bash cleaning.sh
 
-    - name: Bump version and push tag
-      uses: moble/github-tag-action@main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-
     - name: Update Changelog
       uses: heinrichreimer/github-changelog-generator-action@v2.1.1
       with:
