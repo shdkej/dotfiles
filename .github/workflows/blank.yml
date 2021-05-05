@@ -53,3 +53,4 @@ jobs:
       with:
         commit_message: Update Changelog for PR
         file_pattern: CHANGELOG.md
+        branch: master
