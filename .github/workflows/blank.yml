@@ -33,4 +33,8 @@ jobs:
       run: |
         bash init.sh github
         bash cleaning.sh
-        echo "COMPLETE"
+            echo "COMPLETE"
+
+    - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
