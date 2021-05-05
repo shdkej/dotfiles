@@ -34,8 +34,3 @@ jobs:
         bash init.sh github
         bash cleaning.sh
         echo "COMPLETE"
-
-    - name: Generate Auto Changelog
-      uses: ahmadawais/action-auto-changelog@master
-      with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
