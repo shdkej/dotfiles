@@ -43,25 +43,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
 
-    - name: Build Changelog
-      id: github_release
-      uses: mikepenz/release-changelog-builder-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+    - name: Update Changelog
+      uses: heinrichreimer/github-changelog-generator-action@v2.1.1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        output: CHANGELOG.md
-
-    - name: GitHub Push
-      # You may pin to the exact commit or the version.
-      # uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
-      uses: ad-m/github-push-action@v0.6.0
+        token: $
+        issues: true
+        issuesWoLabels: true
+        pullRequests: true
+        prWoLabels: true
+        unreleased: true
+        addSections: '{"documentation":{"prefix":"**Documentation:**","labels":["documentation"]}}'
+        
+    - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        # Token for the repo. Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        # Determines if force push is used
-        force: true # optional
-        # Determines if --tags is used
-        tags: true # optional
+        commit_message: Update Changelog for PR
+        file_pattern: CHANGELOG.md
