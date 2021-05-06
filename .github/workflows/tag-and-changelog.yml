@@ -37,11 +37,17 @@ jobs:
     #    bash init.sh github
     #    bash cleaning.sh
 
-    - uses: ardalanamini/auto-changelog@v1.1.0
+    - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
       id: changelog
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        exclude: 'perf,other,breaking'
+
+    - name: build test changelog
+      id: testlog
+      uses: gandarez/changelog-action@v1.0.4
+      
+    - name: check test changelog
+      run: echo "${{ steps.testlog.outputs.changelog }}"
 
     - name: Get the changelog
       run: echo "${{ steps.changelog.outputs.changelog }}" > CHANGELOG.md
