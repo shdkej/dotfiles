@@ -33,7 +33,7 @@ jobs:
     - name: Run a multi-line script
       run: |
         echo "COMPLETE"
-        echo "skip"
+        echo ${{ github.ref }}
     #    bash init.sh github
     #    bash cleaning.sh
 
@@ -59,4 +59,3 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
