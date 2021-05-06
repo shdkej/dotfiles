@@ -55,9 +55,9 @@ then
     mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
 ln $DOTFILES/.vimrc $VIMRC || RESULT="${RESULT}\n Fail vim link dotfile"
-source $VIMRC || RESULT="${RESULT}\n Fail vim execute source"
-vim +'PlugInstall' +qall > /dev/null || RESULT="${RESULT}\n Fail vim plugin install"
-pip3 install python-language-server
+#source $VIMRC || RESULT="${RESULT}\n Fail vim execute source"
+#vim +'PlugInstall' +qall > /dev/null || RESULT="${RESULT}\n Fail vim plugin install"
+#pip3 install python-language-server
 
 # oh-my-zsh
 ZSH_CONFIG=~/.zshrc
@@ -71,6 +71,7 @@ yes | sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/t
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # zsh auto suggestions
 git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+rm $ZSH_CONFIG
 ln $DOTFILES/.zshrc $ZSH_CONFIG || RESULT="${RESULT}\n Fail zsh link dotfile"
 
 # tmux
@@ -104,4 +105,6 @@ echo "###\n----Copy below Code\n###"
 echo "source ~/.vimrc && source ~/.zshrc"
 echo "tmux source ~/.tmux.conf"
 echo "chsh -s /usr/bin/zsh"
+echo "git config --global user.email 'shdkej@github.com'"
+echo "git config --global user.name 'shdkej'"
 ln -s $DOTFILES/UltiSnips/ ~/.vim/UltiSnips

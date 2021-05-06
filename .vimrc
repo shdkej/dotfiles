@@ -66,10 +66,6 @@ endfun
 au BufWritePre * :call TrimWhitespace()
 "au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
-"selected line move to Archive.md
-vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
-nnoremap <silent> <F2> :VimwikiGoto INBOX<CR>
-
 
 " Plug
 call plug#begin('~/.vim/plugged')
@@ -93,6 +89,7 @@ Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go'
 Plug 'hashivim/vim-terraform'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 
 Plug 'joshdick/onedark.vim'
 "
@@ -155,10 +152,24 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
                     \}]
 "let g:vimwiki_folding='expr'
 "set foldlevelstart=1
+
+"selected line move to Archive.md
+vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
+nnoremap <silent> <F2> :VimwikiGoto INBOX<CR>
 autocmd FileType markdown imap [[ [[<C-x><C-o>
 autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
 autocmd FileType markdown hi Title cterm=bold ctermfg=Yellow
+autocmd FileType markdown inoremap <tab> <c-t>
+autocmd FileType markdown inoremap <s-tab> <c-d>
+autocmd FileType markdown nmap <buffer><silent> <leader>td :call TodoStart()<CR>
+nmap <buffer><silent> td :call TodoStart()<CR>
+
+function! TodoStart()
+    let l:command = 'add ' . getline('.')
+    "execute '!python3 ~/workspace/python/google-calendar-api/google-calendar.py ' . l:command
+    execute 'normal! A ' . strftime('%Y-%m-%d %H:%M:%S +0100')
+endfunction
 
 function! LastModified()
     if g:md_modify_disabled
@@ -229,6 +240,16 @@ augroup vimwikiauto
 augroup END
 
 let g:md_modify_disabled = 0
+
+" Markdown Preview
+nmap <leader>m <Plug>MarkdownPreviewToggle
+
+" md-img-paste
+autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+autocmd FileType vimwiki nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+
+" Goyo
+nnoremap <silent><F7> :Goyo<CR>
 
 " startify
 nnoremap <silent> <leader>] :Startify <CR>
@@ -308,21 +329,7 @@ let g:go_bin_path = "/home/sh/golang/bin"
 autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
 noremap <buffer> <F10> :exec '!python3 -m pdb' shellescape(@%, 1)<cr>
 nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
-autocmd FileType markdown nmap <buffer><silent> <leader>td :call TodoStart()<CR>
-nmap <buffer><silent> td :call TodoStart()<CR>
 
-function! TodoStart()
-    let l:command = 'add ' . getline('.')
-    "execute '!python3 ~/workspace/python/google-calendar-api/google-calendar.py ' . l:command
-    execute 'normal! A ' . strftime('%Y-%m-%d %H:%M:%S +0100')
-endfunction
-
-" Markdown Preview
-nmap <leader>m <Plug>MarkdownPreviewToggle
-
-" md-img-paste
-autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-autocmd FileType vimwiki nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-
-" Goyo
-nnoremap <silent><F7> :Goyo<CR>
+" Prettier
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.ts,*.json PrettierAsync

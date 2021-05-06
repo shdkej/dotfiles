@@ -94,6 +94,29 @@ spec:
 			# livenessProbe:
 endsnippet
 
+snippet values "helm values" !b
+replicaCount: 1
+
+fullname: ${1:template-dashboard}
+image:
+  repository: ${2:shdkej/template-client}
+  tag: ${3:0.1.0}
+
+service:
+  type: ClusterIP
+  port: ${4:3000}
+
+ingress:
+  enabled: true
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ${1:dash}.${5:minikube}
+      paths: [/]
+endsnippet
+
 snippet svc "Service" !b
 apiVersion: v1
 kind: Service

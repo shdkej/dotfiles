@@ -76,6 +76,7 @@ plugins=(
   zsh-autosuggestions
 )
 
+~/dotfiles/keyboard.sh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -204,8 +205,8 @@ function vr() {
 }
 
 function ggg() {
+    git pull
     git-cz -a
-    standard-version
     git push --follow-tags origin master
     actions-cli
 }
@@ -232,4 +233,5 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$GOBIN:$HOME/.fzf/bin:/snap/bin
 
 # Added by serverless binary installer
 export PATH="$HOME/.serverless/bin:$PATH"
-export PATH="~/.npm-global/bin:$PATH"
+export PATH="$HOME/npm-global/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
