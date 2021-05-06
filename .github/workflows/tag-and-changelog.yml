@@ -35,6 +35,12 @@ jobs:
     #    bash init.sh github
     #    bash cleaning.sh
 
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.26.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        
     - name: Github Tag with semantic versioning
       uses: hennejg/github-tag-action@v4.2.4
       id: generator
