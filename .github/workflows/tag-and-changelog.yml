@@ -39,20 +39,14 @@ jobs:
 
     - name: Github Tag with semantic versioning
       uses: hennejg/github-tag-action@v4.2.4
+      id: generator
       with:
-        # Required for permission to tag the repo.
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Update Changelog
-      uses: heinrichreimer/github-changelog-generator-action@v2.1.1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        issues: true
-        issuesWoLabels: true
-        pullRequests: true
-        prWoLabels: true
-        unreleased: true
-        addSections: '{"documentation":{"prefix":"**Documentation:**","labels":["documentation"]}}'
+        
+    - name: push tag
+      run : |
+        echo ${{ steps.generator.outputs.changelog }} > CHANGELOG.md
+        echo ${{ steps.generator.outputs.new_tag }}
         
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
