@@ -37,10 +37,9 @@ jobs:
     #    bash init.sh github
     #    bash cleaning.sh
 
-    - uses: BobAnkh/auto-generate-changelog@master
+    - name: Run Changelog CI
+      uses: saadmk11/changelog-ci@v0.8.0
       with:
-        REPO_NAME: 'BobAnkh/auto-generate-changelog'
-        ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        PATH: '/CHANGELOG.md'
-        COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
-        TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+        changelog_filename: CHANGELOG.md
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
