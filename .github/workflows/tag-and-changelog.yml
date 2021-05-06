@@ -40,11 +40,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
-
-    - name: Universal Changelog Generator
+        
+    - name: Build Changelog
       id: generator
-      uses: mrchief/universal-changelog-action@v1.3.0
-      
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
     - name: output write to file
       run: echo "${{ steps.generator.outputs.changelog }}" > CHANGELOG.md
          
