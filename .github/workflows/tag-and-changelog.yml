@@ -40,12 +40,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
-        
-    - name: Github Tag with semantic versioning
-      uses: hennejg/github-tag-action@v4.2.4
+
+    - name: changelog-action
       id: generator
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      uses: gandarez/changelog-action@v1.0.4
         
     - name: push tag
       run : |
