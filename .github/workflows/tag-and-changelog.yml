@@ -37,28 +37,23 @@ jobs:
     #    bash init.sh github
     #    bash cleaning.sh
 
-    - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
-      id: changelog
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: build test changelog
-      id: testlog
-      uses: gandarez/changelog-action@v1.0.4
-      
-    - name: check test changelog
-      run: echo "${{ steps.testlog.outputs.changelog }}"
-
-    - name: Get the changelog
-      run: echo "${{ steps.changelog.outputs.changelog }}" > CHANGELOG.md
-
-    - name: Commit files
+    - name: standard versioning
       run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -m "Add changes" -a
-    - name: Push changes
+        npm i -g standard-version
+        git config --global user.email "shdkej@github.com"
+        git config --global user.name "shdkej"
+        standard-version
+    - name: push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
+
+    - name: pull-request
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: "master"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        pr_title: "${{ github.ref }} into master"
+        pr_body: ":robot: need template"
+        pr_label: "auto-pr"
