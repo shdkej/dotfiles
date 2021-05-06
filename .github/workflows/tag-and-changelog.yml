@@ -44,13 +44,10 @@ jobs:
     # changelog
     - name: Build Changelog
       id: generator
-      uses: ardalanamini/auto-changelog@v1.1.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        exclude: 'perf,other,breaking'
+      uses: dangoslen/changelog-enforcer@v2.2.0
   
-    - name: output write to file
-      run: echo "${{ steps.generator.outputs.changelog }}" > CHANGELOG.md
+    #- name: output write to file
+    #  run: echo "${{ steps.generator.outputs.changelog }}" > CHANGELOG.md
          
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
