@@ -36,7 +36,13 @@ jobs:
         echo "skip"
     #    bash init.sh github
     #    bash cleaning.sh
-        
+
+    - name: Github Tag with semantic versioning
+      uses: hennejg/github-tag-action@v4.2.4
+      with:
+        # Required for permission to tag the repo.
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Update Changelog
       uses: heinrichreimer/github-changelog-generator-action@v2.1.1
       with:
