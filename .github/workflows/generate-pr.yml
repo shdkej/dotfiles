@@ -9,11 +9,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        commit-message: update changelog
-        title: Update Changelog
-        body: Update changelog to reflect release changes
-        branch: update-changelog
-        base: master
+    - name: pull-request                                                          
+      uses: repo-sync/pull-request@v2                                             
+      with:                                                                       
+        destination_branch: "master"                                              
+        github_token: ${{ secrets.GITHUB_TOKEN }}                                 
+        pr_title: "${{ github.ref }} into master"                                 
+        pr_body: "auto generated pull request" 
