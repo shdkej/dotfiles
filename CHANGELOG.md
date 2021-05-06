@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * get back to original script ([](https://github.com/shdkej/dotfiles/commit/))
+* test one more ([](https://github.com/shdkej/dotfiles/commit/))
 * test tagging ([](https://github.com/shdkej/dotfiles/commit/))
 * write to file ([](https://github.com/shdkej/dotfiles/commit/))
 
