@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* test following tags ([fa7bb30](https://github.com/shdkej/dotfiles/commit/fa7bb301bb4006c8d45817d5560d177e4197b0fc))
+
+## 1.1.0 (2021-05-06)
+
+
+### Features
+
 * one more test standard version ([242bbcf](https://github.com/shdkej/dotfiles/commit/242bbcfb87f9ec88161e525cb1dd8388a8f3fdf2))
 
 ## 1.1.0 (2021-05-06)
