@@ -38,19 +38,10 @@ jobs:
     #    bash cleaning.sh
 
     - name: Generate changelog
-      uses: charmixer/auto-changelog-action@v1
+      id: changelog
+      uses: metcalfc/changelog-generator@v1.0.0
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        myToken: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Commit files
-      env:
-        CI_USER: shdkej
-        CI_EMAIL: shdkej@github.com
-      run: |
-        git config --local user.email "$CI_EMAIL"
-        git config --local user.name "$CI_USER"
-        git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && echo "push=true" >> $GITHUB_ENV || echo "No changes to CHANGELOG.md"
-
-    - name: Push changes
-      run: |
-        git push origin master
+    - name: Get the changelog
+      run: echo "${{ steps.changelog.outputs.changelog }}"
