@@ -45,8 +45,8 @@ jobs:
         
     - name: push tag
       run : |
-        echo ${{ steps.generator.outputs.changelog }} > CHANGELOG.md
-        echo ${{ steps.generator.outputs.new_tag }}
+        echo "${{ steps.generator.outputs.new_tag }}"
+        echo "${{ steps.generator.outputs.changelog }}" > CHANGELOG.md
         
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
