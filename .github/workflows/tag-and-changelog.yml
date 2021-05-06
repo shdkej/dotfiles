@@ -41,6 +41,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
         
+    # changelog
     - name: Build Changelog
       id: generator
       uses: mikepenz/release-changelog-builder-action@v1
