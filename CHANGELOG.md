@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.1.0 (2021-05-06)
+
+
+### Features
+
+* test standard versioning ([668266e](https://github.com/shdkej/dotfiles/commit/668266e4aa38fe62f89ef3cc28de1fa34823323f))
+
 ### 1.0.1 (2021-05-06)
 
 
