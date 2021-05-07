@@ -40,14 +40,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
-        
-    # changelog
-    - name: Build Changelog
-      id: generator
-      uses: dangoslen/changelog-enforcer@v2.2.0
-  
-    #- name: output write to file
-    #  run: echo "${{ steps.generator.outputs.changelog }}" > CHANGELOG.md
          
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
