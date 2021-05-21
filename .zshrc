@@ -207,7 +207,7 @@ function vr() {
 function ggg() {
     git pull
     git-cz -a
-    git push --follow-tags origin master
+    git push --follow-tags origin $(git branch --show-current)
     actions-cli
 }
 

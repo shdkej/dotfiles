@@ -599,21 +599,6 @@ roleRef:
 	apiGroup: rbac.authorization.k8s.io
 endsnippet
 
-snippet hpa "HorizontalPodAutoscaler" !b
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-	name: ${5:$1}
-spec:
-	scaleTargetRef:
-		apiVersion: apps/v1
-		kind: Deployment
-		name: ${1:mydeployment}
-	minReplicas: ${2:1}
-	maxReplicas: ${3:5}
-	targetCPUUtilizationPercentage: ${4:70}
-endsnippet
-
 snippet pvolm "Volume Mount and spec" !b
 	volumeMounts:
 	- name: ${1:volume}
@@ -670,11 +655,15 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 10
+	  target:
+	    type: Utilization
+        averageUtilization: 10
   - type: Resource
     resource:
     name: memory
-      targetAverageValue: 1000Mi
+	  target:
+	    type: Utilization
+        averageValue: 1000Mi
 endsnippet
 
 snippet istio "istio gateway and virtualservice" !b

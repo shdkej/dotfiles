@@ -3,3 +3,14 @@ fun ${1:function_name}($2)
 	${3:" code}
 endf
 endsnippet
+
+snippet tf "toggle function" b
+let s:toggle= 0
+function! Toggle()
+    if s:toggle
+        let s:toggle = 0
+    else
+        let s:toggle = 1
+    endif
+endfunction
+endsnippet

@@ -155,20 +155,24 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
 
 "selected line move to Archive.md
 vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
-nnoremap <silent> <F2> :VimwikiGoto INBOX<CR>
 autocmd FileType markdown imap [[ [[<C-x><C-o>
 autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
 autocmd FileType markdown hi Title cterm=bold ctermfg=Yellow
 autocmd FileType markdown inoremap <tab> <c-t>
 autocmd FileType markdown inoremap <s-tab> <c-d>
-autocmd FileType markdown nmap <buffer><silent> <leader>td :call TodoStart()<CR>
-nmap <buffer><silent> td :call TodoStart()<CR>
+nmap <silent> <F2> :call ToggleTodo()<CR>
 
-function! TodoStart()
-    let l:command = 'add ' . getline('.')
-    "execute '!python3 ~/workspace/python/google-calendar-api/google-calendar.py ' . l:command
-    execute 'normal! A ' . strftime('%Y-%m-%d %H:%M:%S +0100')
+let s:toggleTodo = 0
+function! ToggleTodo()
+    let s:inbox = '~/wiki-blog/content/INBOX.md'
+    if s:toggleTodo
+        execute 'bd ' . s:inbox
+        let s:toggleTodo = 0
+    else
+        execute 'vsp ' . s:inbox
+        let s:toggleTodo = 1
+    endif
 endfunction
 
 function! LastModified()
@@ -179,7 +183,7 @@ function! LastModified()
         let save_cursor = getpos(".")
         let n = min([10, line("$")])
         keepjumps exe '1,' . n . 's#^\(.\{,10}updated\s*: \).*#\1' .
-            \ strftime('%Y-%m-%d %H:%M:%S +0100') . '#e'
+            \ strftime('%Y-%m-%d %H:%M:%S +0900') . '#e'
         "if expand('#:t:r') != 'index'
         "    keepjumps exe '1, ' . n . 's#^\(.\{,10}parent\s*: \).*#\1' .
         "        \ '[[' . expand('#:r') . ']]'
@@ -211,8 +215,8 @@ function! NewTemplate()
     call add(l:template, '---')
     call add(l:template, 'title   : ')
     call add(l:template, 'summary : ')
-    call add(l:template, 'date    : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
-    call add(l:template, 'updated : ' . strftime('%Y-%m-%d %H:%M:%S +0100'))
+    call add(l:template, 'date    : ' . strftime('%Y-%m-%d %H:%M:%S +0900'))
+    call add(l:template, 'updated : ' . strftime('%Y-%m-%d %H:%M:%S +0900'))
     call add(l:template, 'tags    : ')
     call add(l:template, 'parent  : [[' . expand("#:t:r") . "]]")
     call add(l:template, '---')
@@ -332,4 +336,4 @@ nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
 
 " Prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.ts,*.json PrettierAsync
+autocmd BufWritePre *.js,*.ts,*.json,*.html PrettierAsync
