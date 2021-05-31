@@ -66,6 +66,9 @@ endfun
 au BufWritePre * :call TrimWhitespace()
 "au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
+" multi line bash execute in vim
+vnoremap <leader>c :'<,'> w !bash<CR>
+
 
 " Plug
 call plug#begin('~/.vim/plugged')
@@ -170,7 +173,7 @@ function! ToggleTodo()
         execute 'bd ' . s:inbox
         let s:toggleTodo = 0
     else
-        execute 'vsp ' . s:inbox
+        execute 'e ' . s:inbox
         let s:toggleTodo = 1
     endif
 endfunction

@@ -114,6 +114,7 @@ alias python='python3'
 alias i='w3m duckduckgo.com'
 alias ka='kubectl run -it curl --image=radial/busyboxplus:curl'
 alias gs='git status'
+alias gcz='git cz -a'
 
 # fzf
 # cd extend
@@ -179,7 +180,7 @@ function da() {
   local cid
   cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" bash
+  [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" sh
 }
 function dr() {
   local cid
@@ -209,6 +210,13 @@ function ggg() {
     git-cz -a
     git push --follow-tags origin $(git branch --show-current)
     actions-cli
+}
+
+function hanspell() {
+    local file
+    file=$1
+    docker run --rm -v ~/wiki-blog/content/:/c shdkej/hanspell \
+        /bin/sh -c "cat /c/$file | hanspell-cli 2>&1 > /dev/null | grep '-'"
 }
 
 export FZF_DEFAULT_OPTS="--extended"
