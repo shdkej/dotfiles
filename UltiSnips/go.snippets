@@ -1,0 +1,42 @@
+snippet getapi "golang get rest api"
+func getDictionary() {
+	resp, err := http.Get()
+	if err != nil {
+		log.Println(err)
+	}
+	defer res.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+	}
+
+	result := interface{}
+	err = json.Unmarshal(data)
+	if err != nil {
+		log.Println(err)
+	}
+	return result
+}
+endsnippet
+
+snippet bdd "golang bdd expression"
+import (
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"testing"
+)
+
+func Test${1}(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Running ${1} Test")
+}
+
+var _ = Describe("Test ${1}", func() {
+	Context("Test Initial", func() {
+		It("running initial", func() {
+			err := Init()
+			Expect(err).Should(BeNil())
+		})
+	})
+})
+endsnippet

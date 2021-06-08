@@ -33,3 +33,7 @@ rclone sync /home/sh/workspace google:/workspace -v --log-file /tmp/rclone.log \
     --filter "- golang/**" \
     --max-size 50M
     #--exclude ".git/**"
+
+rclone sync onedrive:/document google:/document -v --log-file /tmp/rclone.log \
+    --config /home/sh/.config/rclone/rclone.conf \
+    --max-size 50M

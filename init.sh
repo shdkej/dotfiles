@@ -107,4 +107,5 @@ echo "tmux source ~/.tmux.conf"
 echo "chsh -s /usr/bin/zsh"
 echo "git config --global user.email 'shdkej@github.com'"
 echo "git config --global user.name 'shdkej'"
+echo "git config --global core.editor 'vim'"
 ln -s $DOTFILES/UltiSnips/ ~/.vim/UltiSnips

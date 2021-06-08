@@ -13,7 +13,6 @@ set cindent " C언어 자동 들여쓰기
 set bs=eol,start,indent
 set history=256
 set laststatus=0 " 상태바 표시 항상
-" set paste " 붙여넣기 계단현상 없애기 it makes prevent ultisnips
 set shiftwidth=4 " 자동 들여쓰기 너비 설정
 set showmatch " 일치하는 괄호 하이라이팅
 set smartcase " 검색시 대소문자 구별
@@ -27,6 +26,7 @@ set incsearch
 set term=xterm-256color
 set t_Co=256
 set cursorline
+" set paste " 붙여넣기 계단현상 없애기 it makes prevent ultisnips
 " 마지막으로 수정된 곳에 커서를 위치함
 au BufReadPost *
 \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -66,6 +66,7 @@ endfun
 au BufWritePre * :call TrimWhitespace()
 "au BufRead,BufNewFile *.{go,py} match BadWhitespace /\s\+$/
 
+nnoremap <leader>/ :noh<CR>
 " multi line bash execute in vim
 vnoremap <leader>c :'<,'> w !bash<CR>
 
@@ -87,6 +88,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
 Plug 'ferrine/md-img-paste.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'ActivityWatch/aw-watcher-vim'
 
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -340,3 +342,8 @@ nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
 " Prettier
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.ts,*.json,*.html PrettierAsync
+
+hi def myXLine ctermfg=140 cterm=bold
+hi def mymdH4 ctermfg=cyan cterm=none
+match myXLine /    -.*/
+match mymdH4 /####.*/

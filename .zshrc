@@ -115,6 +115,7 @@ alias i='w3m duckduckgo.com'
 alias ka='kubectl run -it curl --image=radial/busyboxplus:curl'
 alias gs='git status'
 alias gcz='git cz -a'
+alias clipboard='xclip -selection clipboard'
 
 # fzf
 # cd extend
@@ -206,6 +207,12 @@ function vr() {
 }
 
 function ggg() {
+    size=$(du -B 1 $PWD | sort -h | tail -n 1 | cut -f 1)
+    size_human=$(du -h $PWD | sort -h | tail -n 1 | cut -f 1)
+    if [[ $size -gt 10000000 ]]; then
+        echo "This Directory Size over 10M. It could be wrong." $size_human
+        return
+    fi
     git pull
     git-cz -a
     git push --follow-tags origin $(git branch --show-current)
