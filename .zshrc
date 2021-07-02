@@ -116,6 +116,7 @@ alias ka='kubectl run -it curl --image=radial/busyboxplus:curl'
 alias gs='git status'
 alias gcz='git cz -a'
 alias clipboard='xclip -selection clipboard'
+alias ipad='bash ~/workspace/file/ipad_monitor.sh -r'
 
 # fzf
 # cd extend
@@ -206,6 +207,7 @@ function vr() {
     vi ~/wiki-blog/content/$(ls ~/wiki-blog/content/ | shuf -n 1)
 }
 
+# git check size - pull - commit - push - watch action
 function ggg() {
     size=$(du -B 1 $PWD | sort -h | tail -n 1 | cut -f 1)
     size_human=$(du -h $PWD | sort -h | tail -n 1 | cut -f 1)
@@ -219,6 +221,13 @@ function ggg() {
     actions-cli
 }
 
+# go to git directory
+function zz() {
+    dir=$(find $HOME/workspace -name ".git" | fzf)
+    cd $dir/..
+}
+
+# spell check in korean
 function hanspell() {
     local file
     file=$1

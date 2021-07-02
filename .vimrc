@@ -343,7 +343,7 @@ nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.ts,*.json,*.html PrettierAsync
 
-hi def myXLine ctermfg=140 cterm=bold
 hi def mymdH4 ctermfg=cyan cterm=none
-match myXLine /    -.*/
+hi def myXLine ctermfg=140 cterm=none
 match mymdH4 /####.*/
+match myXLine /    -.*/
