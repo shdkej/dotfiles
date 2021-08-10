@@ -42,6 +42,9 @@ syntax on
 endif
 
 imap <C-c> <ESC>
+map <C-n> :cnext<CR>:lnext<CR>
+map <C-m> :cprevious<CR>:lprevious<CR>
+nnoremap <leader>a :cclose<CR>:lclose<CR>
 
 set colorcolumn=80
 highlight OverLength ctermbg=240 ctermfg=white guibg=#592929
@@ -161,12 +164,13 @@ let g:vimwiki_list = [{'path': g:wiki_directory,
 "selected line move to Archive.md
 vnoremap ta :'<, '> w >>~/wiki-blog/content/Archive.md <bar> normal gvd<CR>
 autocmd FileType markdown imap [[ [[<C-x><C-o>
-autocmd FileType markdown nnoremap <F1> :execute "VWB" <Bar> :lopen<CR>
+autocmd FileType markdown nnoremap <F12> :execute "VWB" <Bar> :lopen<CR>
 autocmd FileType markdown nnoremap <silent><leader>wt :VimwikiTable<CR>
 autocmd FileType markdown hi Title cterm=bold ctermfg=Yellow
-autocmd FileType markdown inoremap <tab> <c-t>
+autocmd FileType markdown inoremap <leader><tab> <c-t>
 autocmd FileType markdown inoremap <s-tab> <c-d>
 nmap <silent> <F2> :call ToggleTodo()<CR>
+nmap <silent> <leader>t :Ag '\- \[ \]'<CR>
 
 let s:toggleTodo = 0
 function! ToggleTodo()
@@ -303,9 +307,6 @@ inoremap <silent><expr> <c-@> coc#refresh()
 au FileType vimwiki let b:coc_suggest_disable = 1
 
 " vim-go
-map <C-n> :cnext<CR>:lnext<CR>
-map <C-m> :cprevious<CR>:lprevious<CR>
-nnoremap <leader>a :cclose<CR>:lclose<CR>
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')

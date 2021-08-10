@@ -32,10 +32,10 @@ if [ -z ${1+x} ] # has any argument with run script then skip
 then
     if ! dpkg -s golang-go >/dev/null 2>&1; then
         curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
-        wget https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
-        $SUDO tar -xvf go1.14.3.linux-amd64.tar.gz
+        wget https://dl.google.com/go/go1.16.5.linux-amd64.tar.gz
+        $SUDO tar -xvf go1.16.5.linux-amd64.tar.gz
         $SUDO mv go /usr/local
-        $SUDO rm go1.14.3.linux-amd64.tar.gz
+        $SUDO rm go1.16.5.linux-amd64.tar.gz
         $SUDO apt update -y
         $SUDO apt install -y golang-go nodejs
     fi

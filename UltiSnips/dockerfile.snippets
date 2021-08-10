@@ -22,3 +22,15 @@ COPY . .
 EXPOSE 3000
 CMD ["npm", "start"]
 endsnippet
+
+snippet go "for golang"
+FROM golang:1.16-alpine
+RUN useradd user
+USER user
+WORKDIR /home/user
+RUN apk add --no-cache git
+WORKDIR /go/src/github.com/shdkej/project
+COPY . .
+RUN go build main.go
+CMD ./main
+endsnippet
