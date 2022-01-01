@@ -24,6 +24,7 @@ set expandtab
 set ruler " 현재 커서 위치 표시
 set incsearch
 set term=xterm-256color
+set clipboard=unnamed
 set t_Co=256
 set cursorline
 " set paste " 붙여넣기 계단현상 없애기 it makes prevent ultisnips
@@ -91,13 +92,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
 Plug 'ferrine/md-img-paste.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'ActivityWatch/aw-watcher-vim'
 
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go'
 Plug 'hashivim/vim-terraform'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'joshdick/onedark.vim'
 "
@@ -118,6 +119,24 @@ let g:ctrlp_custom_ignore = {
 
 "tagbar
 map <F4> :TagbarToggle<CR>
+
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ "sort" : 0,
+    \ 'kinds' : [
+        \ 'h4:headings4',
+        \ 'h:headings',
+    \ ]
+\ }
+
+let g:tagbar_type_vimwiki = {
+    \ 'ctagstype' : 'vimwiki',
+    \ 'sort': 0,
+    \ 'kinds' : [
+        \ 'h4:headings4',
+        \ 'h:Heading',
+    \ ]
+ }
 
 "airline (use buffer)
 let g:airline_disable_statusline = 1
@@ -172,15 +191,13 @@ autocmd FileType markdown inoremap <s-tab> <c-d>
 nmap <silent> <F2> :call ToggleTodo()<CR>
 nmap <silent> <leader>t :Ag '\- \[ \]'<CR>
 
-let s:toggleTodo = 0
 function! ToggleTodo()
     let s:inbox = '~/wiki-blog/content/INBOX.md'
-    if s:toggleTodo
-        execute 'bd ' . s:inbox
-        let s:toggleTodo = 0
+    let s:currentfile = expad('%:t') == "INBOX.md"
+    if s:currentfile
+        execute 'e#'
     else
         execute 'e ' . s:inbox
-        let s:toggleTodo = 1
     endif
 endfunction
 

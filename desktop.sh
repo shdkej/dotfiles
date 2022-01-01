@@ -47,6 +47,13 @@ npm config set prefix '~/npm-global'
 npm install -g git-cz
 npm install -g actions-cli
 
+# albert
+echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
+sudo apt update
+sudo apt install albert
+
+
 # done
 echo "## Change terminal font"
 echo "## install Chrome"

@@ -74,6 +74,7 @@ plugins=(
   git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  zsh-z
 )
 
 ~/dotfiles/keyboard.sh
@@ -117,6 +118,7 @@ alias gs='git status'
 alias gcz='git cz -a'
 alias clipboard='xclip -selection clipboard'
 alias ipad='bash ~/workspace/file/ipad_monitor.sh -r'
+alias duh='du -h | sort -h | tail'
 
 # fzf
 # cd extend

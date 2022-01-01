@@ -37,3 +37,7 @@ rclone sync /home/sh/workspace google:/workspace -v --log-file /tmp/rclone.log \
 rclone sync onedrive:/document google:/document -v --log-file /tmp/rclone.log \
     --config /home/sh/.config/rclone/rclone.conf \
     --max-size 50M
+
+rclone sync onedrive:/document /home/sh/document -v --log-file /tmp/rclone.log \
+    --config /home/sh/.config/rclone/rclone.conf \
+    --max-size 50M
