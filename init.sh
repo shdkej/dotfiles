@@ -55,6 +55,7 @@ then
     mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
 ln $DOTFILES/.vimrc $VIMRC || RESULT="${RESULT}\n Fail vim link dotfile"
+ln -s $DOTFILES/vimconfig ~/.vim/ || RESULT="${RESULT}\n Fail Vim Link Vim Config"
 #source $VIMRC || RESULT="${RESULT}\n Fail vim execute source"
 #vim +'PlugInstall' +qall > /dev/null || RESULT="${RESULT}\n Fail vim plugin install"
 #pip3 install python-language-server

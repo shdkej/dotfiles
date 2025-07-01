@@ -42,11 +42,6 @@ if has("syntax")
 syntax on
 endif
 
-imap <C-c> <ESC>
-map <C-n> :cnext<CR>:lnext<CR>
-map <C-m> :cprevious<CR>:lprevious<CR>
-nnoremap <leader>a :cclose<CR>:lclose<CR>
-
 set colorcolumn=80
 highlight OverLength ctermbg=240 ctermfg=white guibg=#592929
 highlight ColorColumn guibg=#2d2d2d ctermbg=240 ctermfg=white
@@ -84,7 +79,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'mhinz/vim-startify'
@@ -95,10 +89,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'fatih/vim-go'
-Plug 'hashivim/vim-terraform'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'joshdick/onedark.vim'
 "
@@ -136,40 +127,7 @@ let g:tagbar_type_vimwiki = {
         \ 'h4:headings4',
         \ 'h:Heading',
     \ ]
- }
-
-"airline (use buffer)
-let g:airline_disable_statusline = 1
-let g:airline#extensions#tabline#enabled = 1              " vim-airline 버퍼 목록 켜기
-let g:airline#extensions#tabline#fnamemod = ':t'          " vim-airline 버퍼 목록 파일명만 출력
-let g:airline#extensions#tabline#buffer_nr_show = 1       " buffer number를 보여준다
-let g:airline#extensions#tabline#buffer_nr_format = '%s:' " buffer
-nnoremap <C-S-t> :enew<CR>
-nnoremap <silent> <leader>4 :bp <BAR> bd #<CR>
-nnoremap <silent> <F5> :bprevious!<CR>
-nnoremap <silent> <F6> :bnext!<CR>
-inoremap <silent> <F5> <C-O>:bprevious!<CR>
-inoremap <silent> <F6> <C-O>:bnext!<CR>
-
-"fzf
-nnoremap <silent> <leader>f :FZF --preview=head\ -10\ {}<cr>
-nnoremap <silent> <leader>F :FZF ~<cr>
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-" Open files in vertical horizontal split
-nnoremap <silent> <Leader>v :call fzf#run({
-\   'right': winwidth('.') / 2,
-\   'sink':  'vertical botright split' })<CR>
-
-command! -bang -nargs=* Ag call fzf#vim#ag_raw(<q-args>, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
-
-" ag
-map <leader>s :Ag<Space>
-nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
-set grepprg=ag\ --vimgrep\ $*
-set grepformat=%f:%l:%c:%m
-nnoremap <silent> <F12> :GREP<CR>
-vnoremap // y:Ag <C-R>=fnameescape(@")<CR><CR>
+\ }
 
 " vimwiki
 let g:wiki_directory = '~/wiki-blog/content/'
@@ -271,24 +229,14 @@ augroup END
 
 let g:md_modify_disabled = 0
 
-" Markdown Preview
-nmap <leader>m <Plug>MarkdownPreviewToggle
-
-" md-img-paste
-autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-autocmd FileType vimwiki nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-
-" Goyo
-nnoremap <silent><F7> :Goyo<CR>
-
 " startify
 nnoremap <silent> <leader>] :Startify <CR>
 let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
         \ { 'd': g:wiki_directory . 'diary/diary.md' },
-        \ { 'w': g:wiki_directory . '/index.md' },
-        \ { 'j': g:wiki_directory . '/Journal.md' },
-        \ { 't': g:wiki_directory . '/INBOX.md' },
+        \ { 'w': g:wiki_directory . 'index.md' },
+        \ { 'j': g:wiki_directory . 'Journal.md' },
+        \ { 't': g:wiki_directory . 'INBOX.md' },
         \ ]
 let g:startify_lists = [
       \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
@@ -316,11 +264,45 @@ let g:coc_global_extensions = [
   \ 'coc-docker',
   \ 'coc-ultisnips',
   \ 'coc-python',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
   \ ]
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 inoremap <silent><expr> <c-@> coc#refresh()
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> K  :call CocActionAsync('doHover')<CR>
+
+
+" 자동완성 메뉴에서 선택된 아이템 Confirm (Enter)
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" eslint 자동 fix (저장 또는 직접 실행)
+nnoremap <silent> <leader>af :CocCommand eslint.executeAutofix<CR>
+
+" 코드 포맷팅 (Prettier, LSP)
+nnoremap <silent> <leader>f :call CocAction('format')<CR>
+
+" 빠른 오류 목록 열기
+nnoremap <silent> <leader>q :CocList diagnostics<CR>
+
+" yaml 문서 완성 강제 호출
+inoremap <silent><expr> <C-Space> coc#refresh()
+
+" 문제 있는 라인으로 빠르게 이동
+nnoremap <silent> <leader>en :CocNext<CR>
+nnoremap <silent> <leader>ep :CocPrev<CR>
+
+" Hover 문서 보기
+nnoremap <silent> <leader>h K
+
+
+
 au FileType vimwiki let b:coc_suggest_disable = 1
 
 " vim-go
@@ -352,11 +334,6 @@ let g:go_version_warning = 0
 let g:go_code_completion_enabled = 0
 let g:go_bin_path = "/home/sh/golang/bin"
 
-" python command
-autocmd FileType python nmap <leader>t  :VimuxRunCommand(pytest)
-noremap <buffer> <F10> :exec '!python3 -m pdb' shellescape(@%, 1)<cr>
-nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<cr>
-
 " Prettier
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.ts,*.json,*.html PrettierAsync
@@ -365,3 +342,6 @@ hi def mymdH4 ctermfg=cyan cterm=none
 hi def myXLine ctermfg=140 cterm=none
 match mymdH4 /####.*/
 match myXLine /    -.*/
+
+" 설정
+source ~/.vim/vimconfig/keymaps.vim
