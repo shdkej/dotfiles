@@ -31,7 +31,7 @@ command! -bang -nargs=* Ag call fzf#vim#ag_raw(<q-args>, fzf#vim#with_preview({'
 
 " ag
 map <leader>s :Ag<Space>
-nnoremap <silent> <Space> :Ag <C-R><C-W><CR>
+nnoremap <silent> <Space> :RG <C-R>=expand("<cword>")<CR><CR>
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 nnoremap <silent> <F12> :GREP<CR>

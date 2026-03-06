@@ -9,5 +9,6 @@
     ],
     "yaml.schemas": {
         "https://json.schemastore.org/kubernetes.json": "/*.k8s.yaml"
-    }
+    },
+    "python.pythonPath": ".venv/bin/python"
 }

@@ -2,49 +2,36 @@
 
 set -u -e
 
-SUDO=''
-x=''
-if [ "$(whoami)" != "root" ]
-then
-    SUDO='sudo'
-fi
-
-DOTFILES=~/dotfiles
-if [ "${1+x}" == "github" ] # has any argument with run script then skip
-then
-    DOTFILES=~/work/dotfiles/dotfiles
-fi
-
-# install package
-BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux xcape wget xclip'
-DEVELOP_PACKAGES='ctags flake8 silversearcher-ag'
-if ! dpkg -s $BASIC_PACKAGES >/dev/null 2>&1; then
-    echo "###\nPackage Install\n###"
-    $SUDO apt update -y
-    $SUDO apt-get install -y $BASIC_PACKAGES
-
-    # install programming package
-    echo "###\nProgramming Package Install\n###"
-    $SUDO apt-get install -y $DEVELOP_PACKAGES
-fi
-
-if [ -z ${1+x} ] # has any argument with run script then skip
-then
-    if ! dpkg -s golang-go >/dev/null 2>&1; then
-        curl -sL https://deb.nodesource.com/setup_12.x | $SUDO bash -
-        wget https://dl.google.com/go/go1.16.5.linux-amd64.tar.gz
-        $SUDO tar -xvf go1.16.5.linux-amd64.tar.gz
-        $SUDO mv go /usr/local
-        $SUDO rm go1.16.5.linux-amd64.tar.gz
-        $SUDO apt update -y
-        $SUDO apt install -y golang-go nodejs
-    fi
-fi
-
-
+OS="$(uname -s)"
+DOTFILES=~/workspace/dotfiles
 RESULT=""
 
-# vim plug
+# ============================================================
+# 1. 패키지 설치
+# ============================================================
+case "$OS" in
+    Linux*)
+        SUDO=''
+        if [ "$(whoami)" != "root" ]; then
+            SUDO='sudo'
+        fi
+        BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux wget xclip'
+        DEVELOP_PACKAGES='ctags silversearcher-ag ripgrep bat fzf jq'
+        if ! dpkg -s $BASIC_PACKAGES >/dev/null 2>&1; then
+            echo "###\nPackage Install\n###"
+            $SUDO apt update -y
+            $SUDO apt-get install -y $BASIC_PACKAGES $DEVELOP_PACKAGES
+        fi
+        ;;
+    Darwin*)
+        echo "macOS brew 설정은 for-mac.sh를 사용하세요"
+        ;;
+esac
+
+
+# ============================================================
+# 2. Vim
+# ============================================================
 VIMRC=~/.vimrc
 echo "###\nSetting VIM\n###"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -54,13 +41,15 @@ if [ -e $VIMRC  ]
 then
     mv $VIMRC $VIMRC.backup || rm $VIMRC
 fi
-ln $DOTFILES/.vimrc $VIMRC || RESULT="${RESULT}\n Fail vim link dotfile"
+ln -s $DOTFILES/.vimrc $VIMRC || RESULT="${RESULT}\n Fail vim link dotfile"
 ln -s $DOTFILES/vimconfig ~/.vim/ || RESULT="${RESULT}\n Fail Vim Link Vim Config"
 #source $VIMRC || RESULT="${RESULT}\n Fail vim execute source"
 #vim +'PlugInstall' +qall > /dev/null || RESULT="${RESULT}\n Fail vim plugin install"
-#pip3 install python-language-server
 
-# oh-my-zsh
+
+# ============================================================
+# 3. Oh My Zsh
+# ============================================================
 ZSH_CONFIG=~/.zshrc
 if [ -e $ZSH_CONFIG  ]
 then
@@ -71,14 +60,16 @@ yes | sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/t
 # zsh highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # zsh auto suggestions
-git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # zsh z
 git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
 rm $ZSH_CONFIG
-ln $DOTFILES/.zshrc $ZSH_CONFIG || RESULT="${RESULT}\n Fail zsh link dotfile"
+ln -s $DOTFILES/.zshrc $ZSH_CONFIG || RESULT="${RESULT}\n Fail zsh link dotfile"
 
-# tmux
-# ---
+
+# ============================================================
+# 4. Tmux
+# ============================================================
 if [ -z ${1+x} ] # has any argument with run script then skip
 then
     TMUX_CONFIG=~/.tmux.conf
@@ -94,15 +85,17 @@ then
 fi
 
 
-# fzf
+# ============================================================
+# 5. FZF
+# ============================================================
 echo "###\nInstall fzf\n###"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
 
 
-# snippet
-echo "###\nSetting Snippet\n###"
-
+# ============================================================
+# 6. Snippet + 결과
+# ============================================================
 echo "${RESULT}"
 echo "###\n----Copy below Code\n###"
 echo "source ~/.vimrc && source ~/.zshrc"

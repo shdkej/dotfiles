@@ -8,23 +8,6 @@ then
     sudo apt-get update
     sudo apt-get install -y kubectl
 fi
-# helm
-if [ ! -e '/usr/local/bin/helm' ];
-then
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-    rm ./get_helm.sh
-fi
-# vagrant
-# terraform
-if [ ! -e '/usr/local/bin/terraform' ];
-then
-    wget https://releases.hashicorp.com/terraform/0.15.1/terraform_0.15.1_linux_amd64.zip
-    unzip terraform_0.15.1_linux_amd64.zip
-    sudo mv terraform /usr/local/bin
-    rm terraform_0.15.1_linux_amd64.zip
-fi
 # ansible
 # serverless
 
