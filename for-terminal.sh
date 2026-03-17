@@ -94,7 +94,40 @@ yes | ~/.fzf/install
 
 
 # ============================================================
-# 6. Snippet + 결과
+# 6. asdf 런타임 설치
+# ============================================================
+if command -v asdf &>/dev/null; then
+    echo "###\nSetting asdf runtimes\n###"
+
+    # 플러그인 추가 (이미 있으면 무시)
+    asdf plugin add nodejs 2>/dev/null || true
+    asdf plugin add java 2>/dev/null || true
+    asdf plugin add yarn 2>/dev/null || true
+
+    # nodejs
+    asdf install nodejs 24.3.0 || true
+    asdf install nodejs 22.21.1 || true
+    asdf install nodejs 20.15.1 || true
+    asdf install nodejs 18.20.8 || true
+
+    # java
+    asdf install java zulu-8.52.0.23 || true
+    asdf install java openjdk-17.0.2 || true
+
+    # yarn
+    asdf install yarn 1.22.11 || true
+
+    # 기본 버전 설정
+    asdf global nodejs 24.3.0
+    asdf global java zulu-8.52.0.23
+    asdf global yarn 1.22.11
+else
+    echo "asdf가 설치되어 있지 않습니다. brew install asdf 후 다시 실행하세요."
+fi
+
+
+# ============================================================
+# 7. Snippet + 결과
 # ============================================================
 echo "${RESULT}"
 echo "###\n----Copy below Code\n###"

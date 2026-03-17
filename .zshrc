@@ -9,6 +9,9 @@ ZSH_THEME="juanghurtado"
 
 KEYTIMEOUT=1
 
+# Node.js가 macOS 시스템 CA 인증서를 사용하도록 설정
+export NODE_OPTIONS="--use-system-ca"
+
 # Plugins
 plugins=(
   git
@@ -110,7 +113,7 @@ export PATH="$HOME/.local/bin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 
 # 전체 패키지 업데이트
-alias update-all='echo "=== Brew ===" && brew update && brew upgrade && brew upgrade --cask && brew cleanup && echo "=== npm ===" && npm update -g && echo "=== pip ===" && pip install --upgrade pip && echo "=== asdf ===" && asdf plugin update --all && echo "=== Claude ===" && claude update && echo "=== Done ==="'
+alias update-all='echo "=== Brew ===" ; brew update && brew upgrade && brew upgrade --cask && brew cleanup ; echo "=== npm ===" ; npm update -g ; echo "=== pip ===" ; pip install --upgrade pip ; echo "=== asdf ===" ; asdf plugin update --all ; echo "=== Claude ===" ; claude update ; echo "=== Done ==="'
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

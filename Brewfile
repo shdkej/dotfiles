@@ -70,6 +70,31 @@ cask "stats"
 cask "visual-studio-code"
 cask "warp"
 
+# Cask - 개발 도구
+cask "cursor"
+cask "dbeaver-community"
+cask "postman"
+cask "figma"
+cask "hammerspoon"
+cask "claude"
+
+# Cask - 커뮤니케이션
+cask "slack"
+cask "microsoft-teams"
+cask "beeper"
+
+# Cask - 네트워크/보안
+cask "tailscale"
+
+# Cask - 유틸리티
+cask "raycast"
+cask "hidden-bar"
+cask "appcleaner"
+cask "keka"
+cask "scroll-reverser"
+cask "cyberduck"
+cask "amphetamine"
+
 # VS Code Extensions
 vscode "akamud.vscode-javascript-snippet-pack"
 vscode "alefragnani.project-manager"
