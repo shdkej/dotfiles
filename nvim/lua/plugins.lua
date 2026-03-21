@@ -65,6 +65,9 @@ require("lazy").setup({
         indent = {
           enable = true,
         },
+        git = {
+          ignore = false,
+        },
         ensure_installed = {
           "lua",
           "vim",
@@ -103,7 +106,7 @@ require("lazy").setup({
           telescope = true,
           treesitter = true,
           native_lsp = { enabled = true },
-          -- lualine은 아래에서 따로 catppuccin theme 사용
+          render_markdown = true,
         },
       })
 
@@ -111,10 +114,9 @@ require("lazy").setup({
       vim.cmd.colorscheme("catppuccin-mocha")
 
       -- colorcolumn, OverLength 같은 시각 보조를 catppuccin 위에서 다시 정의해줄 수도 있어.
-      -- 네 예전 vimrc에서 쓰던 긴 줄 하이라이트 느낌을 살리고 싶으면 여기에 둬.
-      vim.api.nvim_set_hl(0, "OverLength", { bg = "#592929", fg = "#ffffff" })
-      -- 81열 이후 글자 강조
-      vim.cmd([[match OverLength /\%81v.\+/]])
+      -- 긴 줄 하이라이트 (필요 시 주석 해제)
+      -- vim.api.nvim_set_hl(0, "OverLength", { bg = "#592929", fg = "#ffffff" })
+      -- vim.cmd([[match OverLength /\%81v.\+/]])
     end,
   },
 
@@ -423,8 +425,50 @@ require("lazy").setup({
     },
   },
   {
-    "lukas-reineke/headlines.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     ft = { "markdown" },
+    opts = {
+      heading = {
+        enabled = true,
+        icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+        width = "full",
+        border = false,
+        sign = true,
+      },
+      code = {
+        enabled = true,
+        sign = true,
+        language_name = true,
+        language_icon = true,
+        width = "full",
+        border = "thin",
+      },
+      checkbox = {
+        enabled = true,
+        unchecked = { icon = "󰄱 ", highlight = "RenderMarkdownUnchecked" },
+        checked = { icon = "󰱒 ", highlight = "RenderMarkdownChecked" },
+        custom = {
+          todo = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo" },
+        },
+      },
+      bullet = {
+        enabled = true,
+        icons = { "●", "○", "◆", "◇" },
+      },
+      pipe_table = {
+        enabled = true,
+        style = "full",
+      },
+      link = {
+        enabled = true,
+        image = "󰥶 ",
+        hyperlink = "󰌹 ",
+        custom = {
+          web = { pattern = "^http", icon = "󰖟 " },
+          github = { pattern = "github%.com", icon = "󰊤 " },
+        },
+      },
+    },
   },
 })

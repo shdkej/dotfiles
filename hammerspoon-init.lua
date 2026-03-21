@@ -1,7 +1,7 @@
 hs.hotkey.bind({"cmd", "option"}, "r", function() hs.reload() end)
 
 hs.hotkey.bind({}, "f14", function ()
-	toggle_application('iTerm2')
+	toggle_application('cmux')
 end)
 
 hs.hotkey.bind({"cmd"}, "f1", function ()

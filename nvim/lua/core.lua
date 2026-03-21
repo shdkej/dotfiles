@@ -13,7 +13,7 @@ local o = vim.opt
 o.number = true
 o.relativenumber = true
 o.cursorline = true
-o.colorcolumn = "80"
+-- o.colorcolumn = "80"
 o.termguicolors = true
 o.signcolumn = "yes"
 o.scrolloff = 4
@@ -146,8 +146,8 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.linebreak = true
     vim.opt_local.breakindent = true
     vim.opt_local.signcolumn = "no"
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
+    -- vim.opt_local.number = false
+    -- vim.opt_local.relativenumber = false
   end,
 })
 
@@ -165,6 +165,10 @@ end, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>s", function()
   require("telescope.builtin").live_grep()
 end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<Space>", function()
+  require("telescope.builtin").grep_string({ search = vim.fn.expand("<cword>") })
+end, { silent = true })
 
 vim.keymap.set("n", "<leader>b", function()
   require("telescope.builtin").buffers()

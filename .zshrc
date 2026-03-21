@@ -105,6 +105,7 @@ function zz() {
 # PATH
 export PATH="/Users/seongho-noh/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export KUBECONFIG=~/.kube/config:~/.kube/my-oracle-k3s-kubeconfig.yaml
 
 # Secrets (별도 파일로 분리)
 [[ -f ~/.env.local ]] && source ~/.env.local
@@ -113,7 +114,7 @@ export PATH="$HOME/.local/bin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 
 # 전체 패키지 업데이트
-alias update-all='echo "=== Brew ===" ; brew update && brew upgrade && brew upgrade --cask && brew cleanup ; echo "=== npm ===" ; npm update -g ; echo "=== pip ===" ; pip install --upgrade pip ; echo "=== asdf ===" ; asdf plugin update --all ; echo "=== Claude ===" ; claude update ; echo "=== Done ==="'
+alias update-all='echo "=== Brew ===" ; brew update && brew upgrade && brew upgrade --cask && brew cleanup ; echo "=== npm ===" ; npm update -g ; echo "=== Oh My Zsh ===" ; omz update ; echo "=== Neovim ===" ; nvim --headless "+Lazy! sync" +qa ; echo "=== Ruby Gems ===" ; gem update ; echo "=== asdf ===" ; asdf plugin update --all ; echo "=== Claude ===" ; claude update ; echo "=== Done ==="'
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
