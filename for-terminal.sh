@@ -16,7 +16,7 @@ case "$OS" in
             SUDO='sudo'
         fi
         BASIC_PACKAGES='python3 python3-pip curl vim zsh tmux wget xclip'
-        DEVELOP_PACKAGES='ctags silversearcher-ag ripgrep bat fzf jq'
+        DEVELOP_PACKAGES='silversearcher-ag ripgrep bat fzf jq'
         if ! dpkg -s $BASIC_PACKAGES >/dev/null 2>&1; then
             echo "###\nPackage Install\n###"
             $SUDO apt update -y
@@ -62,8 +62,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 # zsh auto suggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # zsh z
-git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
-rm $ZSH_CONFIG
+git clone https://github.com/agkozak/zsh-z ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-z
 ln -s $DOTFILES/.zshrc $ZSH_CONFIG || RESULT="${RESULT}\n Fail zsh link dotfile"
 
 
@@ -94,40 +93,7 @@ yes | ~/.fzf/install
 
 
 # ============================================================
-# 6. asdf 런타임 설치
-# ============================================================
-if command -v asdf &>/dev/null; then
-    echo "###\nSetting asdf runtimes\n###"
-
-    # 플러그인 추가 (이미 있으면 무시)
-    asdf plugin add nodejs 2>/dev/null || true
-    asdf plugin add java 2>/dev/null || true
-    asdf plugin add yarn 2>/dev/null || true
-
-    # nodejs
-    asdf install nodejs 24.3.0 || true
-    asdf install nodejs 22.21.1 || true
-    asdf install nodejs 20.15.1 || true
-    asdf install nodejs 18.20.8 || true
-
-    # java
-    asdf install java zulu-8.52.0.23 || true
-    asdf install java openjdk-17.0.2 || true
-
-    # yarn
-    asdf install yarn 1.22.11 || true
-
-    # 기본 버전 설정
-    asdf global nodejs 24.3.0
-    asdf global java zulu-8.52.0.23
-    asdf global yarn 1.22.11
-else
-    echo "asdf가 설치되어 있지 않습니다. brew install asdf 후 다시 실행하세요."
-fi
-
-
-# ============================================================
-# 7. Snippet + 결과
+# 6. Snippet + 결과
 # ============================================================
 echo "${RESULT}"
 echo "###\n----Copy below Code\n###"

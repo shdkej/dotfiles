@@ -44,11 +44,11 @@ if has("syntax")
 syntax on
 endif
 
-set colorcolumn=80
-highlight OverLength ctermbg=240 ctermfg=white guibg=#592929
-highlight ColorColumn guibg=#2d2d2d ctermbg=240 ctermfg=white
-match OverLength /\%81v.\+/
-set textwidth=80
+" set colorcolumn=80
+" highlight OverLength ctermbg=240 ctermfg=white guibg=#592929
+" highlight ColorColumn guibg=#2d2d2d ctermbg=240 ctermfg=white
+" match OverLength /\%81v.\+/
+" set textwidth=80
 
 " add yaml stuffs
 " au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
@@ -94,13 +94,13 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 
 Plug 'joshdick/onedark.vim'
 Plug 'sainnhe/everforest'
-Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 "
 call plug#end()
 
 " colorscheme onedark
 " colorscheme everforest
-colorscheme catppuccin
+colorscheme catppuccin_mocha
 
 "NERDTree
 nmap <F3> :NERDTreeToggle<CR>
