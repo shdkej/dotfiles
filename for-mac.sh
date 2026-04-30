@@ -5,7 +5,7 @@ if ! command -v brew &>/dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-brew bundle --file="$DOTFILES/Brewfile" || echo "Fail brew bundle"
+brew bundle --file="$DOTFILES/Brewfile" -v || echo "Fail brew bundle"
 
 # hammerspoon key binding
 CONFIG=~/.hammerspoon/init.lua

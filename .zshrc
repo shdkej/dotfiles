@@ -20,6 +20,7 @@ plugins=(
   fasd
   zsh-syntax-highlighting
   zsh-autosuggestions
+  asdf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -32,9 +33,6 @@ export LANG=ko_KR.UTF-8
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git/*"'
 export FZF_DEFAULT_OPTS="--extended"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# asdf
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # libpq
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
@@ -115,6 +113,3 @@ autoload -U +X bashcompinit && bashcompinit
 
 # 전체 패키지 업데이트
 alias update-all='echo "=== Brew ===" ; brew update && brew upgrade && brew upgrade --cask && brew cleanup ; echo "=== npm ===" ; npm update -g ; echo "=== Oh My Zsh ===" ; omz update ; echo "=== Neovim ===" ; nvim --headless "+Lazy! sync" +qa ; echo "=== Ruby Gems ===" ; gem update ; echo "=== asdf ===" ; asdf plugin update --all ; echo "=== Claude ===" ; claude update ; echo "=== Done ==="'
-
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
