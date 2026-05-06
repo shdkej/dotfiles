@@ -1,11 +1,9 @@
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Theme
-ZSH_THEME="juanghurtado"
+# ZSH_THEME="juanghurtado"
+ZSH_THEME="dst"
 
 KEYTIMEOUT=1
 
@@ -17,10 +15,10 @@ plugins=(
   git
   docker
   docker-compose
-  fasd
   zsh-syntax-highlighting
   zsh-autosuggestions
   asdf
+  z
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -38,7 +36,7 @@ export FZF_DEFAULT_OPTS="--extended"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Custom aliases
-alias vi=nvim
+alias vi=vim
 alias cc=claude
 alias cat='bat --theme "Monokai Extended"'
 alias pip=pip3
@@ -50,6 +48,11 @@ alias duh='du -h | sort -h | tail'
 alias gs='git status'
 alias addcert='yarn config set cafile /Users/seongho-noh/.ca/KOLON.crt --global; npm config set cafile /Users/seongho-noh/.ca/KOLON.crt --global'
 alias delcert='yarn config delete cafile --global ; npm config -g delete cafile ; npm config delete cafile ; yarn config delete cafile'
+
+alias ssh-oracle='ssh -i "" ubuntu'
+alias docker-arm='docker build buildx build --platform linux/arm64 --push'
+alias aws-ecr-login='aws ecr get-login-password --region ap-northeast-2 --profile purpleio | docker login --username AWS --password-stdin 221173374788.dkr.ecr.ap-northeast-2.amazonaws.com'
+alias saml-login='saml2aws login -a purpleio -p purpleio'
 
 # fzf functions
 
