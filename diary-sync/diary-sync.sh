@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # diary-sync.sh — 30분마다 세션/시청 raw 데이터를 Claude로 정제해
-# agent-wiki/diary/YYYY-MM-DD.md 에 merge하고 push. 7일 경과 파일 삭제.
+# agent-wiki/content/docs/diary/YYYY-MM-DD.mdx 에 merge하고 push. 7일 경과 파일 삭제.
 set -euo pipefail
 
 export PATH="/Users/seongho-noh/.asdf/installs/nodejs/24.3.0/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
 export HOME="${HOME:-/Users/seongho-noh}"
 
 REPO="$HOME/workspace/agent-wiki"
-DIARY_DIR="$REPO/diary"
+DIARY_DIR="$REPO/content/docs/diary"
 SESSIONS_SCRIPT="$HOME/workspace/prompt-archive/scripts/daily-sessions.py"
 PROMPT_TEMPLATE="$HOME/workspace/prompt-archive/prompts/diary-sync.prompt.md"
 TODAY=$(date +%F)
-TARGET="$DIARY_DIR/$TODAY.md"
+TARGET="$DIARY_DIR/$TODAY.mdx"
 LOG_DIR="$HOME/.claude/logs"
 mkdir -p "$DIARY_DIR" "$LOG_DIR"
 
@@ -80,9 +80,9 @@ else
 fi
 
 CUTOFF=$(date -v-7d +%F)
-for f in "$DIARY_DIR"/*.md; do
+for f in "$DIARY_DIR"/*.mdx; do
   [[ -f "$f" ]] || continue
-  fname=$(basename "$f" .md)
+  fname=$(basename "$f" .mdx)
   if [[ "$fname" < "$CUTOFF" ]]; then
     git rm -q "$f" 2>/dev/null || rm -f "$f"
     log "pruned $fname (older than $CUTOFF)"
