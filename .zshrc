@@ -116,3 +116,6 @@ autoload -U +X bashcompinit && bashcompinit
 
 # 전체 패키지 업데이트
 alias update-all='echo "=== Brew ===" ; brew update && brew upgrade && brew upgrade --cask && brew cleanup ; echo "=== npm ===" ; npm update -g ; echo "=== Oh My Zsh ===" ; omz update ; echo "=== Neovim ===" ; nvim --headless "+Lazy! sync" +qa ; echo "=== Ruby Gems ===" ; gem update ; echo "=== asdf ===" ; asdf plugin update --all ; echo "=== Claude ===" ; claude update ; echo "=== Done ==="'
+
+# Added by Antigravity
+export PATH="/Users/seongho-noh/.antigravity/antigravity/bin:$PATH"
